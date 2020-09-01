@@ -7,7 +7,7 @@
   
       "page1": {
           "title": "About Me",
-          "content": ". I’m Lasse, a Data Science enthusiast! .",
+          "content": ". I&#39;m Lasse, a Data Science enthusiast! .",
           "url": "https://lschmiddey.github.io/fastpages_/about/",
           "relUrl": "/about/",
           "date": ""
