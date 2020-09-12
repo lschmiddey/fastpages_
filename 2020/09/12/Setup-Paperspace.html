@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      3 min read
     
 </span></p>
 
@@ -176,6 +176,163 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Als nächstes wählt man die Maschine, auf der das Projekt laufen soll. Das Beste hierbei: es gibt Maschinen, die von Paperspace komplett umsonst zur Verfügung gestellt werden, sogar mit GPU! Diese sind die letzten 3 Auswahlmöglichkeiten. Und wenn man mehr Power braucht, so kann man auch im Nachhinein noch aufrüsten.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Des weiteren kann man ganz einfach ein bestehendes eigenes git-Repo mit der Instanz verbinden. Dafür einfach den git-Link zum Repo einfügen.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/PaperSpace_and_github.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Zuletzt muss noch eine gültige Kreditkarte hinterlegt werden (wie schon beschrieben, die Kreditkarte wird nur belastet, wenn eine der nicht kotenlosen Alternativen gewählt wird). Danach kann auf "Create new Instance" geklickt werden und schon geht es los!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/open_Instanz.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Jetzt kann auf "Open" geklickt werden und schon startet sich ein Jupyter Notebook. Das Ganze sollte dann in etwa so aussehen (das README.md stammt schon aus dem verlinkten github-Repo):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/first_look_Instanz.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Wie erwähnt ist mein github Repo schon mit der Instanz verbunden. So sieht bislang mein neu angelegtes Repo in github aus:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/git_repo_before_push.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dann lasst uns ein neues Jupyter Notebook anlegen. Einfach auf "New" -&gt; "Python 3" klicken, und es öffnet sich ein Notebook:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/first_notebook.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Als nächstes will ich zeigen, wie sich mit Hilfe des Terminals ganz einfach neue packages installieren lassen (über pip), und wie sich das bestehende github Repo aus dem Terminal ansteuern lässt. Dafür muss man bei Jupyter einfach auf "New" und dann -&gt; "Terminal" klicken.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/open_terminal.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Mit dem Befehl installieren wir aus fastai das fastbook. Dies funktioniert über pip install.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Jetzt will ich zeigen, wie sich das Terminal ganz einfach mit git verbinden lässt. Über git clone können wir öffentliche git-Repos direkt auf unsere Instanz klonen/kopieren:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/gitclone_fastbook_2.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dies finden wir auch direkt in Jupyter wieder:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/gitclone_fastbook_3.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Jetzt wollen wir das Ganze in unser mit der Instanz verbundenem github Repo laden. Dies funktioniert über git add, git commit und git push im Terminal.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/gitclone_fastbook_4.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Anschließend muss noch der User Name zum Repo angegeben werden und das dazugehörige Passwort. Das war's schon. Wie großartig ist das? So sieht das geupdatete github Repo aus:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Paperspace_Setup/git_repo_after_push.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Als weitere großartige Möglichkeit bietet Paperspace in den extra dedizierten Ordnern "datasets" und "storage" an, eigene Dateien umsonst in Paperspace zu speichern. Das bedeutet, dass sich bei Neustarten der Instanzen oder neu anlegen der Instanzen diese Dateien immer da sind! Diese Funktionalität bietet Google Colab zum Beispiel nicht an.</p>
+<p>Ich hoffe dieser Blog war hilfreich und ihr seid wenigstens halb so begeistert wie ich es bin.</p>
+<p>Bleibt dran für die nächsten Posts!</p>
+<p>Euer Lasse</p>
 
 </div>
 </div>
