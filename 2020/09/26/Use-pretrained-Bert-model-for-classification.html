@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      22 min read
+      21 min read
     
 </span></p>
 
@@ -1186,9 +1186,6 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">get_linear_schedule_with_warmup</span>
 
-<span class="c1"># Number of training epochs. The BERT authors recommend between 2 and 4. </span>
-<span class="c1"># We chose to run for 4, but we&#39;ll see later that this may be over-fitting the</span>
-<span class="c1"># training data.</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="c1"># Total number of training steps is [number of batches] x [number of epochs]. </span>
@@ -1275,7 +1272,6 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="c1"># Set the seed value all over the place to make this reproducible.</span>
 <span class="n">seed_val</span> <span class="o">=</span> <span class="mi">42</span>
 
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed_val</span><span class="p">)</span>
@@ -1309,10 +1305,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
     <span class="c1"># Reset the total loss for this epoch.</span>
     <span class="n">total_train_loss</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># Put the model into training mode. Don&#39;t be mislead--the call to </span>
-    <span class="c1"># `train` just changes the *mode*, it doesn&#39;t *perform* the training.</span>
-    <span class="c1"># `dropout` and `batchnorm` layers behave differently during training</span>
-    <span class="c1"># vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)</span>
+
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
     <span class="c1"># For each batch of training data...</span>
@@ -1326,11 +1319,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
             <span class="c1"># Report progress.</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Batch:</span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span><span class="si">}</span><span class="s1">. Elapsed: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-        <span class="c1"># Unpack this training batch from our dataloader. </span>
-        <span class="c1">#</span>
-        <span class="c1"># As we unpack the batch, we&#39;ll also copy each tensor to the GPU using the </span>
-        <span class="c1"># `to` method.</span>
-        <span class="c1">#</span>
+
         <span class="c1"># `batch` contains three pytorch tensors:</span>
         <span class="c1">#   [0]: input ids </span>
         <span class="c1">#   [1]: attention masks</span>
@@ -1348,7 +1337,6 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
                
         <span class="n">total_train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-        <span class="c1"># Perform a backward pass to calculate the gradients.</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 
         <span class="c1"># Clip the norm of the gradients to 1.0.</span>
@@ -1393,15 +1381,6 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
     <span class="c1"># Evaluate data for one epoch</span>
     <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">validation_dataloader</span><span class="p">:</span>
         
-        <span class="c1"># Unpack this training batch from our dataloader. </span>
-        <span class="c1">#</span>
-        <span class="c1"># As we unpack the batch, we&#39;ll also copy each tensor to the GPU using </span>
-        <span class="c1"># the `to` method.</span>
-        <span class="c1">#</span>
-        <span class="c1"># `batch` contains three pytorch tensors:</span>
-        <span class="c1">#   [0]: input ids </span>
-        <span class="c1">#   [1]: attention masks</span>
-        <span class="c1">#   [2]: labels </span>
         <span class="n">b_input_ids</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">b_input_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">b_labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
@@ -1414,15 +1393,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
         <span class="c1"># Accumulate the validation loss.</span>
         <span class="n">total_eval_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-        <span class="c1"># Calculate the accuracy for this batch of test sentences, and</span>
-        <span class="c1"># accumulate it over all batches.</span>
-        <span class="c1">#total_eval_accuracy += sum((preds-b_labels)^2).cpu().numpy()</span>
         
-
-    <span class="c1"># Report the final accuracy for this validation run.</span>
-    <span class="c1">#avg_val_accuracy = total_eval_accuracy #total_eval_accuracy / len(validation_dataloader)</span>
-    <span class="c1">#print(f&#39;Accuracy: {avg_val_accuracy}&#39;)</span>
-
     <span class="c1"># Calculate the average loss over all of the batches.</span>
     <span class="n">avg_val_loss</span> <span class="o">=</span> <span class="n">total_eval_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">validation_dataloader</span><span class="p">)</span>
     
@@ -1544,9 +1515,6 @@ Total training took 0:00:40 (h:mm:ss)
 
 <span class="c1"># Use the &#39;epoch&#39; as the row index.</span>
 <span class="n">df_stats</span> <span class="o">=</span> <span class="n">df_stats</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;epoch&#39;</span><span class="p">)</span>
-
-<span class="c1"># A hack to force the column headers to wrap.</span>
-<span class="c1">#df = df.style.set_table_styles([dict(selector=&quot;th&quot;,props=[(&#39;max-width&#39;, &#39;70px&#39;)])])</span>
 
 <span class="c1"># Display the table.</span>
 <span class="n">df_stats</span>
@@ -1736,8 +1704,6 @@ Total training took 0:00:40 (h:mm:ss)
         <span class="c1"># Unpack the inputs from our dataloader</span>
         <span class="n">b_input_ids</span><span class="p">,</span> <span class="n">b_input_mask</span><span class="p">,</span> <span class="n">b_labels</span> <span class="o">=</span> <span class="n">batch</span>
 
-        <span class="c1"># Telling the model not to compute or store gradients, saving memory and </span>
-        <span class="c1"># speeding up prediction</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
           <span class="c1"># Forward pass, calculate logit predictions</span>
           <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">b_input_ids</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
@@ -1878,8 +1844,6 @@ Total training took 0:00:40 (h:mm:ss)
         <span class="c1"># Unpack the inputs from our dataloader</span>
         <span class="n">b_input_ids</span><span class="p">,</span> <span class="n">b_input_mask</span><span class="p">,</span> <span class="n">b_labels</span> <span class="o">=</span> <span class="n">batch</span>
 
-        <span class="c1"># Telling the model not to compute or store gradients, saving memory and </span>
-        <span class="c1"># speeding up prediction</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
           <span class="c1"># Forward pass, calculate logit predictions</span>
           <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">b_input_ids</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
