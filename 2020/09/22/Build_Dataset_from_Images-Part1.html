@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      3 min read
+      9 min read
     
 </span></p>
 
@@ -163,7 +163,116 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>apt-get update
+<span class="o">!</span>apt-get install libleptonica-dev -y
+<span class="o">!</span>apt-get install tesseract-ocr tesseract-ocr-dev -y
+<span class="o">!</span>apt-get install libtesseract-dev -y
+<span class="o">!</span>apt-get install tesseract-ocr-deu
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Ign:1 http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64  InRelease
+Hit:2 http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64  Release
+Hit:3 http://security.ubuntu.com/ubuntu xenial-security InRelease              
+Ign:5 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64  InRelease
+Hit:6 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64  Release
+Hit:7 http://archive.ubuntu.com/ubuntu xenial InRelease
+Hit:9 http://archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:10 http://archive.ubuntu.com/ubuntu xenial-backports InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+libleptonica-dev is already the newest version (1.73-1).
+0 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+tesseract-ocr is already the newest version (3.04.01-4).
+tesseract-ocr-dev is already the newest version (3.04.01-4).
+0 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+libtesseract-dev is already the newest version (3.04.01-4).
+0 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  tesseract-ocr-deu
+0 upgraded, 1 newly installed, 0 to remove and 39 not upgraded.
+Need to get 4153 kB of archives.
+After this operation, 13.4 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial/universe amd64 tesseract-ocr-deu all 3.04.00-1 [4153 kB]
+Fetched 4153 kB in 1s (2333 kB/s)            
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package tesseract-ocr-deu.
+(Reading database ... 18655 files and directories currently installed.)
+Preparing to unpack .../tesseract-ocr-deu_3.04.00-1_all.deb ...
+Unpacking tesseract-ocr-deu (3.04.00-1) ...
+Setting up tesseract-ocr-deu (3.04.00-1) ...
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install pytesseract
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Requirement already satisfied: pytesseract in /opt/conda/envs/fastai/lib/python3.8/site-packages (0.3.6)
+Requirement already satisfied: Pillow in /opt/conda/envs/fastai/lib/python3.8/site-packages (from pytesseract) (7.2.0)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.vision.widgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">pytesseract</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -198,7 +307,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../storage/data/book_text_images/&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">/</span><span class="s1">&#39;images&#39;</span>
 </pre></div>
 
     </div>
@@ -232,7 +341,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -278,7 +387,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">title_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^.*\_(.*)\..*$&quot;</span><span class="p">,</span><span class="n">img_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img_paths</span><span class="p">))]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">title_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^.*\_(.*)\..*$&quot;</span><span class="p">,</span><span class="n">img_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img_paths</span><span class="p">))]</span>
 </pre></div>
 
     </div>
@@ -488,27 +597,27 @@ window.onload = wrap_img;
   <tbody>
     <tr>
       <th>0</th>
-      <td>war ein schrecklicher Rückfall eingetreten.In ...</td>
+      <td>war ein schrecklicher Rückfall eingetreten.In dem »verheirateten Priester« wurde das LobChristi von Barbey d’Aurévilly gesungen; in »LesDiaboliques« hatte sich der Verfasser dem Teufel ergeben, den er pries; und jetzt erschien der Sadismus,dieser Bastard des Katholizismus, den die Religion inallen Formen mit Exorzismen und Scheiterhaufendurch alle Jahrhunderte verfolgt hat.Mit Barbey d’Aurévilly nahm die Serie der reli—giösen Schriftsteller ein Ende. Eigentlich gehörte dieser Paria in jeder Hinsicht mehr zur weltlichen Lite—ratur als zu jener andern, bei der er einen Platzbeanspruchte, den...</td>
       <td>gegendenStrich</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>höchst moralischer Akt, die Welt von einem sol...</td>
+      <td>höchst moralischer Akt, die Welt von einem solchen Ungeheuerzu befreien? Die Menschheit wäre dann besser und glücklicherund das Leben schöner und süßer.Ich dachte lange darüber nach. Schlaﬂos lag ich in meinerKoj e und hielt mir die Fakten vor Augen. Mit Johnson und Leachredete ich während der Nachtwachen, wenn Wolf Larsen unterDeck war. Beide Männer hatten die Hoffnung verloren — Johnson wegen seiner grundlegenden Schwermut, Leach, weil ersich in seinen vergeblichen Kämpfen erschöpft hatte. Aber eines Nachts ergriff er leidenschaftlich meine Hand und sagte:»Ich glaube, Sie sind in Ordnung...</td>
       <td>derSeewolf</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>deutsches Luder nehmen. Und sollten Sie es dan...</td>
+      <td>deutsches Luder nehmen. Und sollten Sie es dann allzu eilighaben, Mr. Andrews, werden Sie mich wohl von ihr runterziehen müssen.«Andrews wartete, dass die beiden Männer fortritten, undsah ihnen nach, wie sie sich durch das dämmrige Tal entfern—ten und ihre auf und ab wippenden Gestalten mit der dunkleren Schraffur der westlichen Berghänge verschmelzen. Dannaufs Neue überraschte, lenkte die Hände ab und sorgte dafür,dass ihm die eigenen Gesichtszüge fremd vorkamen; er fragtesich, wie er wohl aussah, fragte sich, ob Francine ihn wiederkennen würde, wenn sie ihn jetzt sehen könnte.Seit dem Ab...</td>
       <td>ButchersCrossing</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>müssen.»Sie kamen jetzt in die Vorstadt. Die S...</td>
+      <td>Doktor, das wissen Sie so gut wie ich. Vor hundert Jah—ren hat eine Pestepidemie in Persien alle Bewohner einerStadt getötet und ausgerechnet den Totenwäscher nicht,der nie aufgehört hatte, seine Arbeit zu verrichten.»müssen.»Sie kamen jetzt in die Vorstadt. Die Scheinwerfer beleuchteten die menschenleeren Straßen. Sie hielten an.Vor dem Auto fragte Rieux Tarrou, ob er mitkommenwolle, und der sagte ja. Ein Schimmer vom Himmel er—hellte ihre Gesichter. Rieux lachte plötzlich freundschaftlich.« Sagen Sie, Tarrou, was treibt Sie dazu, sich damit zubefassen? »&lt;&lt; Ich weiß nicht. Meine Moral vie...</td>
       <td>diePest</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>ins Gesicht, wandte sich von ihrem traurigen A...</td>
+      <td>ins Gesicht, wandte sich von ihrem traurigen Ausdruckangewidert ab, und nachdem er zum hundertsten Maldie Aushängeschilder der gegenüberliegenden Geschäfte, die Werbung für die schon nicht mehr erhält—lichen bekannten Aperitifmarken gelesen hatte, stander auf und lief ziellos durch die gelben Straßen derStadt. Er schleppte sich von einsamen Spaziergängen inCafés und von Cafés in Restaurants und erreichte soden Abend. An einem solchen Abend sah Rieux denJournalisten zögernd vor der Tür eines Cafés stehen. Erschien sich zu entschließen, ging hinein und setzte sichhinten hin. Es war um die Ze...</td>
       <td>diePest</td>
     </tr>
   </tbody>
@@ -546,7 +655,7 @@ window.onload = wrap_img;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;müssen.»Sie kamen jetzt in die Vorstadt. Die Scheinwerfer beleuchteten die menschenleeren Straßen. Sie hielten an.Vor dem Auto fragte Rieux Tarrou, ob er mitkommenwolle, und der sagte ja. Ein Schimmer vom Himmel er—hellte ihre Gesichter; Rieux lachte plötzlich freundschaftlich.« Sagen Sie, Teirrou, was treibt Sie dazu, sich damit zubefassen? »«Ich weiß nicht. Meine Moral vielleicht.»«Und die wäre? »«Verständnis.»Tarrou wandte sich dem Haus zu, und Rieux sah erstwieder sein Gesicht, als sie bei dem alten Asthmatikerwaren.&#39;</pre>
+<pre>&#39;Doktor, das wissen Sie so gut wie ich. Vor hundert Jah—ren hat eine Pestepidemie in Persien alle Bewohner einerStadt getötet und ausgerechnet den Totenwäscher nicht,der nie aufgehört hatte, seine Arbeit zu verrichten.»müssen.»Sie kamen jetzt in die Vorstadt. Die Scheinwerfer beleuchteten die menschenleeren Straßen. Sie hielten an.Vor dem Auto fragte Rieux Tarrou, ob er mitkommenwolle, und der sagte ja. Ein Schimmer vom Himmel er—hellte ihre Gesichter. Rieux lachte plötzlich freundschaftlich.« Sagen Sie, Tarrou, was treibt Sie dazu, sich damit zubefassen? »&lt;&lt; Ich weiß nicht. Meine Moral vielleicht.»«Und die wäre? &gt;&gt;«Verständnis.»Tarrou wandte sich dem Haus zu, und Rieux sah erstwieder sein Gesicht, als sie bei dem alten Asthmatikerwaren.&#39;</pre>
 </div>
 
 </div>
@@ -660,31 +769,31 @@ window.onload = wrap_img;
   <tbody>
     <tr>
       <th>0</th>
-      <td>war ein schrecklicher Rückfall eingetreten.In ...</td>
+      <td>war ein schrecklicher Rückfall eingetreten.In dem »verheirateten Priester« wurde das LobChristi von Barbey d’Aurévilly gesungen; in »LesDiaboliques« hatte sich der Verfasser dem Teufel ergeben, den er pries; und jetzt erschien der Sadismus,dieser Bastard des Katholizismus, den die Religion inallen Formen mit Exorzismen und Scheiterhaufendurch alle Jahrhunderte verfolgt hat.Mit Barbey d’Aurévilly nahm die Serie der reli—giösen Schriftsteller ein Ende. Eigentlich gehörte dieser Paria in jeder Hinsicht mehr zur weltlichen Lite—ratur als zu jener andern, bei der er einen Platzbeanspruchte, den...</td>
       <td>gegendenStrich</td>
       <td>1</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>höchst moralischer Akt, die Welt von einem sol...</td>
+      <td>höchst moralischer Akt, die Welt von einem solchen Ungeheuerzu befreien? Die Menschheit wäre dann besser und glücklicherund das Leben schöner und süßer.Ich dachte lange darüber nach. Schlaﬂos lag ich in meinerKoj e und hielt mir die Fakten vor Augen. Mit Johnson und Leachredete ich während der Nachtwachen, wenn Wolf Larsen unterDeck war. Beide Männer hatten die Hoffnung verloren — Johnson wegen seiner grundlegenden Schwermut, Leach, weil ersich in seinen vergeblichen Kämpfen erschöpft hatte. Aber eines Nachts ergriff er leidenschaftlich meine Hand und sagte:»Ich glaube, Sie sind in Ordnung...</td>
       <td>derSeewolf</td>
       <td>5</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>deutsches Luder nehmen. Und sollten Sie es dan...</td>
+      <td>deutsches Luder nehmen. Und sollten Sie es dann allzu eilighaben, Mr. Andrews, werden Sie mich wohl von ihr runterziehen müssen.«Andrews wartete, dass die beiden Männer fortritten, undsah ihnen nach, wie sie sich durch das dämmrige Tal entfern—ten und ihre auf und ab wippenden Gestalten mit der dunkleren Schraffur der westlichen Berghänge verschmelzen. Dannaufs Neue überraschte, lenkte die Hände ab und sorgte dafür,dass ihm die eigenen Gesichtszüge fremd vorkamen; er fragtesich, wie er wohl aussah, fragte sich, ob Francine ihn wiederkennen würde, wenn sie ihn jetzt sehen könnte.Seit dem Ab...</td>
       <td>ButchersCrossing</td>
       <td>4</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>müssen.»Sie kamen jetzt in die Vorstadt. Die S...</td>
+      <td>Doktor, das wissen Sie so gut wie ich. Vor hundert Jah—ren hat eine Pestepidemie in Persien alle Bewohner einerStadt getötet und ausgerechnet den Totenwäscher nicht,der nie aufgehört hatte, seine Arbeit zu verrichten.»müssen.»Sie kamen jetzt in die Vorstadt. Die Scheinwerfer beleuchteten die menschenleeren Straßen. Sie hielten an.Vor dem Auto fragte Rieux Tarrou, ob er mitkommenwolle, und der sagte ja. Ein Schimmer vom Himmel er—hellte ihre Gesichter. Rieux lachte plötzlich freundschaftlich.« Sagen Sie, Tarrou, was treibt Sie dazu, sich damit zubefassen? »&lt;&lt; Ich weiß nicht. Meine Moral vie...</td>
       <td>diePest</td>
       <td>2</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>ins Gesicht, wandte sich von ihrem traurigen A...</td>
+      <td>ins Gesicht, wandte sich von ihrem traurigen Ausdruckangewidert ab, und nachdem er zum hundertsten Maldie Aushängeschilder der gegenüberliegenden Geschäfte, die Werbung für die schon nicht mehr erhält—lichen bekannten Aperitifmarken gelesen hatte, stander auf und lief ziellos durch die gelben Straßen derStadt. Er schleppte sich von einsamen Spaziergängen inCafés und von Cafés in Restaurants und erreichte soden Abend. An einem solchen Abend sah Rieux denJournalisten zögernd vor der Tür eines Cafés stehen. Erschien sich zu entschließen, ging hinein und setzte sichhinten hin. Es war um die Ze...</td>
       <td>diePest</td>
       <td>2</td>
     </tr>
