@@ -848,7 +848,6 @@ dtype: int64</pre>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">skm</span>
  
 <span class="k">def</span> <span class="nf">_accumulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learn</span><span class="p">):</span>
-    <span class="c1">#pred = learn.pred.argmax(dim=self.dim_argmax) if self.dim_argmax else learn.pred</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
     <span class="n">pred</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">pred</span>
     <span class="n">pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">pred</span><span class="p">))</span>
