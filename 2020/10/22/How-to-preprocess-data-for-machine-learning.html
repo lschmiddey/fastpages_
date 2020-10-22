@@ -1,0 +1,2943 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to pre-process data for machine learning | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="How to pre-process data for machine learning" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-22T00:00:00-05:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"How to pre-process data for machine learning","dateModified":"2020-10-22T00:00:00-05:00","datePublished":"2020-10-22T00:00:00-05:00","url":"https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastpages_/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to pre-process data for machine learning | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="How to pre-process data for machine learning" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-22T00:00:00-05:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"How to pre-process data for machine learning","dateModified":"2020-10-22T00:00:00-05:00","datePublished":"2020-10-22T00:00:00-05:00","url":"https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/fastpages_/">Data Science Blog von lschmiddey</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastpages_/about/">About Me</a><a class="page-link" href="/fastpages_/search/">Search</a><a class="page-link" href="/fastpages_/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to pre-process data for machine learning</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-22T00:00:00-05:00" itemprop="datePublished">
+        Oct 22, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      16 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lschmiddey/fastpages_/tree/master/_notebooks/2020-10-22-How-to-preprocess-data-for-machine-learning.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/fastpages_/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lschmiddey/fastpages_/master?filepath=_notebooks%2F2020-10-22-How-to-preprocess-data-for-machine-learning.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lschmiddey/fastpages_/blob/master/_notebooks/2020-10-22-How-to-preprocess-data-for-machine-learning.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-10-22-How-to-preprocess-data-for-machine-learning.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A common task for almost all data science projects is to preprocess your data. This is especially the case for tabular data. In this blog I want to build a pre-process function which can handle will handle all these pre-processing steps for us. On top of that, I will add enough flexibility to that function to make it useful not just in this example.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's start by loading the data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Imports">Imports<a class="anchor-link" href="#Imports"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">MinMaxScaler</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We later want to save and load data with pickle, so let's define these functions:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">save_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span> <span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">load_obj</span><span class="p">(</span><span class="n">name</span> <span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;train.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSSubClass</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>...</th>
+      <th>PoolArea</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>MiscVal</th>
+      <th>MoSold</th>
+      <th>YrSold</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+      <th>SalePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>60</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2008</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>208500</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>20</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>5</td>
+      <td>2007</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>181500</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>60</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>11250</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>9</td>
+      <td>2008</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>223500</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>70</td>
+      <td>RL</td>
+      <td>60.0</td>
+      <td>9550</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2006</td>
+      <td>WD</td>
+      <td>Abnorml</td>
+      <td>140000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>60</td>
+      <td>RL</td>
+      <td>84.0</td>
+      <td>14260</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>12</td>
+      <td>2008</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>250000</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 81 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(1460, 81)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We've got 81 columns in our data. That's a lot of data, for this blog we only need a couple of these variables. The function will then work for any length of datasets. We define which columns to keep and then check the data types.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="s1">&#39;MSZoning&#39;</span><span class="p">,</span> <span class="s1">&#39;LotFrontage&#39;</span><span class="p">,</span> <span class="s1">&#39;LotArea&#39;</span><span class="p">,</span> <span class="s1">&#39;Street&#39;</span><span class="p">,</span> <span class="s1">&#39;OverallQual&#39;</span><span class="p">,</span> <span class="s1">&#39;YearBuilt&#39;</span><span class="p">,</span> <span class="s1">&#39;CentralAir&#39;</span><span class="p">,</span> <span class="s1">&#39;SaleType&#39;</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">to_keep</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>SaleType</th>
+      <th>SalePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2003</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>208500</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>6</td>
+      <td>1976</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>181500</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>11250</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2001</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>223500</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>RL</td>
+      <td>60.0</td>
+      <td>9550</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>1915</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>140000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>RL</td>
+      <td>84.0</td>
+      <td>14260</td>
+      <td>Pave</td>
+      <td>8</td>
+      <td>2000</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>250000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Id               int64
+MSZoning        object
+LotFrontage    float64
+LotArea          int64
+Street          object
+OverallQual      int64
+YearBuilt        int64
+CentralAir      object
+SaleType        object
+SalePrice        int64
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Datetime-vs-Continuous-vs-Categorical">Datetime vs Continuous vs Categorical<a class="anchor-link" href="#Datetime-vs-Continuous-vs-Categorical"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In tabular data, there are usually four different data types: dates, continuous and categorical variables (of which boolean are a special type). We need to define which column is of which type. This dataset does not contain a datetime column, so I will define some random datetime data to show you how to cope with datetime data too.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Fake_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;1980-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Fake_date_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;1980-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>SaleType</th>
+      <th>SalePrice</th>
+      <th>Fake_date</th>
+      <th>Fake_date_2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2003</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>208500</td>
+      <td>1985-12-22T00:00:00.000000000</td>
+      <td>1988-05-22T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>6</td>
+      <td>1976</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>181500</td>
+      <td>1999-11-12T00:00:00.000000000</td>
+      <td>1983-08-11T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>11250</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2001</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>223500</td>
+      <td>1998-03-07T00:00:00.000000000</td>
+      <td>1991-12-15T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>RL</td>
+      <td>60.0</td>
+      <td>9550</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>1915</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>140000</td>
+      <td>1985-04-11T00:00:00.000000000</td>
+      <td>1980-11-27T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>RL</td>
+      <td>84.0</td>
+      <td>14260</td>
+      <td>Pave</td>
+      <td>8</td>
+      <td>2000</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>250000</td>
+      <td>1980-12-04T00:00:00.000000000</td>
+      <td>1982-10-01T00:00:00.000000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Id               int64
+MSZoning        object
+LotFrontage    float64
+LotArea          int64
+Street          object
+OverallQual      int64
+YearBuilt        int64
+CentralAir      object
+SaleType        object
+SalePrice        int64
+Fake_date       object
+Fake_date_2     object
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now need to define which column should be of which type. We use four lists for this:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fake_date&#39;</span><span class="p">,</span> <span class="s1">&#39;Fake_date_2&#39;</span><span class="p">]</span>
+<span class="n">continuous_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LotFrontage&#39;</span><span class="p">,</span> <span class="s1">&#39;LotArea&#39;</span><span class="p">,</span> <span class="s1">&#39;YearBuilt&#39;</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span>
+<span class="n">categorical_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MSZoning&#39;</span><span class="p">,</span> <span class="s1">&#39;Street&#39;</span><span class="p">,</span> <span class="s1">&#39;OverallQual&#39;</span><span class="p">,</span> <span class="s1">&#39;SaleType&#39;</span><span class="p">,</span><span class="s1">&#39;CentralAir&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I defined 'OverallQual' as a category, because even though this variable is in ascending order, we do not know whether the difference from OverallQual of 6 and 7 is the same magnitude than OverallQual from 0 to 1. However, you can define this variable as continous as well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We then define a small function, which will take our lists as input and transform our data to the correct data types.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cont_type</span><span class="p">,</span> <span class="n">cat_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cat_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">cat_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_type</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">date_type</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span>    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Did it work?</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">continuous_type</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Id                      int64
+MSZoning             category
+LotFrontage           float64
+LotArea                 int64
+Street               category
+OverallQual          category
+YearBuilt               int64
+CentralAir           category
+SaleType             category
+SalePrice               int64
+Fake_date      datetime64[ns]
+Fake_date_2    datetime64[ns]
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That looks good! We can now make use of pandas various datetime functions to add more informations to our data. I therefore make use of fastai's add_datepart function. However, I do not want to import the whole library, so I simple get the parts for this specific function.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">ifnone</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="nb">any</span><span class="p">,</span><span class="n">b</span><span class="p">:</span><span class="nb">any</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">any</span><span class="p">:</span>
+    <span class="s2">&quot;`a` if `a` is not None, otherwise `b`.&quot;</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">a</span>
+    
+<span class="k">def</span> <span class="nf">make_date</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_field</span><span class="p">):</span>
+    <span class="s2">&quot;Make sure `df[date_field]` is of the right date type.&quot;</span>
+    <span class="n">field_dtype</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_field</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_dtype</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">DatetimeTZDtype</span><span class="p">):</span>
+        <span class="n">field_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">field_dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">date_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_field</span><span class="p">],</span> <span class="n">infer_datetime_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">add_datepart</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="s2">&quot;Helper function that adds columns relevant to a date in the column `field_name` of `df`.&quot;</span>
+    <span class="n">make_date</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">ifnone</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[Dd]ate$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">field_name</span><span class="p">))</span>
+    <span class="n">attr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="s1">&#39;Day&#39;</span><span class="p">,</span> <span class="s1">&#39;Dayofweek&#39;</span><span class="p">,</span> <span class="s1">&#39;Dayofyear&#39;</span><span class="p">,</span> <span class="s1">&#39;Is_month_end&#39;</span><span class="p">,</span> <span class="s1">&#39;Is_month_start&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Is_quarter_end&#39;</span><span class="p">,</span> <span class="s1">&#39;Is_quarter_start&#39;</span><span class="p">,</span> <span class="s1">&#39;Is_year_end&#39;</span><span class="p">,</span> <span class="s1">&#39;Is_year_start&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">time</span><span class="p">:</span> <span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Hour&#39;</span><span class="p">,</span> <span class="s1">&#39;Minute&#39;</span><span class="p">,</span> <span class="s1">&#39;Second&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="c1"># Pandas removed `dt.week` in v1.1.10</span>
+    <span class="n">week</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">isocalendar</span><span class="p">()</span><span class="o">.</span><span class="n">week</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;isocalendar&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">field</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">week</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">prefix</span><span class="o">+</span><span class="s1">&#39;Week&#39;</span><span class="p">,</span> <span class="n">week</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">field</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span><span class="n">field</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">9</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">drop</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's add to the function, so that after defining the correct data type it takes all of our date-variables and transforms them according to add_datepart.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cont_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cat_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">cat_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_type</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">date_type</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">add_datepart</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>  
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_1</span> <span class="o">=</span> <span class="n">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_type</span><span class="p">,</span> <span class="n">continuous_type</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+<span class="n">df_1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>Fake_date_2Week</th>
+      <th>Fake_Week</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>...</th>
+      <th>Fake_date_2Day</th>
+      <th>Fake_date_2Dayofweek</th>
+      <th>Fake_date_2Dayofyear</th>
+      <th>Fake_date_2Is_month_end</th>
+      <th>Fake_date_2Is_month_start</th>
+      <th>Fake_date_2Is_quarter_end</th>
+      <th>Fake_date_2Is_quarter_start</th>
+      <th>Fake_date_2Is_year_end</th>
+      <th>Fake_date_2Is_year_start</th>
+      <th>Fake_date_2Elapsed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>20</td>
+      <td>51</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2003</td>
+      <td>Y</td>
+      <td>...</td>
+      <td>22</td>
+      <td>6</td>
+      <td>143</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>580262400</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>32</td>
+      <td>45</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>6</td>
+      <td>1976</td>
+      <td>Y</td>
+      <td>...</td>
+      <td>11</td>
+      <td>3</td>
+      <td>223</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>429408000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>50</td>
+      <td>10</td>
+      <td>11250</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2001</td>
+      <td>Y</td>
+      <td>...</td>
+      <td>15</td>
+      <td>6</td>
+      <td>349</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>692755200</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>RL</td>
+      <td>60.0</td>
+      <td>48</td>
+      <td>15</td>
+      <td>9550</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>1915</td>
+      <td>Y</td>
+      <td>...</td>
+      <td>27</td>
+      <td>3</td>
+      <td>332</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>344131200</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>RL</td>
+      <td>84.0</td>
+      <td>39</td>
+      <td>49</td>
+      <td>14260</td>
+      <td>Pave</td>
+      <td>8</td>
+      <td>2000</td>
+      <td>Y</td>
+      <td>...</td>
+      <td>1</td>
+      <td>4</td>
+      <td>274</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>402278400</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 36 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pretty cool right? The next step is to split the data into train and validation set. There are usually three ways to do this: split randomly, split based on a identifier column (so that the same person is either in train or valid regardless of how many rows she represents in the data) or by date (usually in time series).</p>
+<p>I give three examples how to do this given this specific data. I start by randomly splitting the data:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, we need to define our dependend variable and the rest:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dep_var</span> <span class="o">=</span> <span class="s1">&#39;SalePrice&#39;</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dep_var</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here's how we can make a random split using the train_test_split:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="n">cols</span><span class="p">],</span> <span class="n">df_1</span><span class="p">[</span><span class="n">dep_var</span><span class="p">],</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((978, 35), (482, 35), (978,), (482,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Another common way how to split the data is based on an ID, so that an ID can only be in one group. Next to the dependend variable we need to define the variable on which to split.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">split_var</span> <span class="o">=</span> <span class="s1">&#39;Id&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># list of unique_id</span>
+<span class="n">unique_id_array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+<span class="c1"># split into train and test data based on uid</span>
+<span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span>
+<span class="n">cnt_uid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span>
+<span class="n">len_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">cnt_uid</span><span class="o">*</span><span class="n">test_size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">len_train</span> <span class="o">=</span> <span class="n">cnt_uid</span> <span class="o">-</span> <span class="n">len_test</span>
+
+<span class="n">test_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">,</span> <span class="n">len_test</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">train_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_idx</span><span class="p">))</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">df_1</span><span class="p">[</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">df_1</span><span class="p">[</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((978, 35), (482, 35), (978,), (482,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case we end up with the exact same shape of all train and test data. This is due to the fact, that in this case the Id is unique. To see that this will change when there is more than one row per Id I create a fake_ID and show you the results. Let's assume we have 10 IDs:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">IDS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">df_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;Fake_ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">IDS</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_1</span><span class="o">.</span><span class="n">Fake_ID</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0      1
+1      2
+2      3
+3      4
+4      5
+5      6
+6      7
+7      8
+8      9
+9     10
+10     1
+11     2
+Name: Fake_ID, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now do the same thing as before, only using this Fake_ID as split_ID:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">split_var</span> <span class="o">=</span> <span class="s1">&#39;Fake_ID&#39;</span>
+
+<span class="c1"># list of unique_id</span>
+<span class="n">unique_id_array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+<span class="c1"># split into train and test data based on uid</span>
+<span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span>
+<span class="n">cnt_uid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span>
+<span class="n">len_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">cnt_uid</span><span class="o">*</span><span class="n">test_size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">len_train</span> <span class="o">=</span> <span class="n">cnt_uid</span> <span class="o">-</span> <span class="n">len_test</span>
+
+<span class="n">test_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">,</span> <span class="n">len_test</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">train_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_idx</span><span class="p">))</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">df_1</span><span class="p">[</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">df_1</span><span class="p">[</span><span class="n">df_1</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((1022, 35), (438, 35), (1022,), (438,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Beatiful! So let's move on to our last way to split data, defined by the date. We have created the Fake_date variable, resulting in random dates from 01.01.2980 - 01.01.2000. Let's say, we want the last 6 month to be our testset.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_1</span><span class="o">.</span><span class="n">Fake_Year</span><span class="o">&lt;</span><span class="mi">1999</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_1</span><span class="o">.</span><span class="n">Fake_Month</span><span class="o">&lt;</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="n">train_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">cond</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">cond</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">df_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">df_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((1413, 35), (47, 35), (1413,), (47,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now have the three most common cases for how to split your data. Let's put that into a function.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">split_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x_cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">split_var</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cond</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    split_mode can take three values: random, on_split_id, on_condition</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">split_mode</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">x_cols</span><span class="p">],</span> <span class="n">df_1</span><span class="p">[</span><span class="n">dep_var</span><span class="p">],</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">split_mode</span> <span class="o">==</span> <span class="s1">&#39;on_split_id&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">split_var</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Give name of split_var&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># list of unique_id</span>
+            <span class="n">unique_id_array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+            <span class="c1"># split into train and test data based on uid</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span>
+            <span class="n">cnt_uid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span>
+            <span class="n">len_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">cnt_uid</span><span class="o">*</span><span class="n">test_size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">len_train</span> <span class="o">=</span> <span class="n">cnt_uid</span> <span class="o">-</span> <span class="n">len_test</span>
+
+            <span class="n">test_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">,</span> <span class="n">len_test</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">train_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unique_id_array</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_idx</span><span class="p">))</span>
+
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">x_cols</span><span class="p">]</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">split_var</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">y_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">x_cols</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">split_mode</span> <span class="o">==</span> <span class="s1">&#39;on_condition&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cond</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;You have to specify cond, for example like so: cond = (df_1.Fake_Year&lt;1999) | (df_1.Fake_Month&lt;6)&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">train_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">cond</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">test_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">cond</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">df_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_idx</span><span class="p">]</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">df_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+            <span class="n">y_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">dep_var</span><span class="p">]</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Something is not working right, did you specify the split_mode?&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>        
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's check our function for all three split_modes:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>   <span class="o">=</span> <span class="n">split_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_1</span><span class="p">,</span> <span class="n">x_cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((978, 35), (482, 35), (978,), (482,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>   <span class="o">=</span> <span class="n">split_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_1</span><span class="p">,</span> <span class="n">x_cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;on_split_id&#39;</span><span class="p">,</span> <span class="n">split_var</span><span class="o">=</span><span class="n">split_var</span><span class="p">)</span>
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((1022, 35), (438, 35), (1022,), (438,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>   <span class="o">=</span> <span class="n">split_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_1</span><span class="p">,</span> <span class="n">x_cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;on_condition&#39;</span><span class="p">,</span> <span class="n">cond</span><span class="o">=</span><span class="n">cond</span><span class="p">)</span>
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((1413, 35), (47, 35), (1413,), (47,))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Absolutely brilliant. And we're almost done now. The last piece of the puzzle is the transformation and standardization of our data. We convert the categorical variables into numbers and save the mapping into a dictionary. We standardize the continuous variables with a standardizer of choice and save it. IMPORTANT: we build the dictionaries and the standardizer on the trainset only and use it on the testset to avoid any spillover effects.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, we build a function which will transform all of our categorical variables and save it to path. We therefore need a function to save our dicts (and later load them).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cat_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">cat_type</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="n">dict_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dict_inv_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cat_type</span><span class="p">:</span>
+        <span class="n">dict_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">dict_inv_</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">dict_inv_</span><span class="p">)</span>
+        <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">dict_inv_</span><span class="p">)</span>
+        <span class="n">dict_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+        <span class="n">dict_inv_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_inv_list</span><span class="p">)</span>
+    <span class="n">dict_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">dict_list_cat&#39;</span>
+    <span class="n">save_obj</span><span class="p">(</span><span class="n">dict_list</span><span class="p">,</span> <span class="n">dict_name</span><span class="p">)</span>
+    <span class="n">dict_inv_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">dict_inv_list_cat&#39;</span>
+    <span class="n">save_obj</span><span class="p">(</span><span class="n">dict_inv_list</span><span class="p">,</span> <span class="n">dict_inv_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">dict_list</span><span class="p">,</span> <span class="n">dict_inv_list</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_1</span><span class="p">,</span> <span class="n">x_cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">dict_list</span><span class="p">,</span> <span class="n">dict_inv_list</span> <span class="o">=</span> <span class="n">cat_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">[</span><span class="n">categorical_type</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MSZoning</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>SaleType</th>
+      <th>CentralAir</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>744</th>
+      <td>3</td>
+      <td>1</td>
+      <td>7</td>
+      <td>8</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>492</th>
+      <td>3</td>
+      <td>1</td>
+      <td>5</td>
+      <td>6</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>307</th>
+      <td>4</td>
+      <td>1</td>
+      <td>5</td>
+      <td>8</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>985</th>
+      <td>3</td>
+      <td>1</td>
+      <td>4</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>484</th>
+      <td>3</td>
+      <td>1</td>
+      <td>4</td>
+      <td>8</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With this function we automatically saved our dictionaries and mappings to the corresponding path. Next, we take the continuous variables, use a standardizer of our choice and save the standardizer to path. We have to indicate the ID column, because we do not want to standardize this column. We also have to define whether we want to standardize our target variable.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cont_standardize</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">cat_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">id_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">standardizer</span><span class="o">=</span><span class="s1">&#39;StandardScaler&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">standardizer</span> <span class="o">==</span><span class="s1">&#39;StandardScaler&#39;</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cat_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="n">cont_type</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">id_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">id_type</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">cat_type</span><span class="o">==</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">id_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">cat_type</span><span class="p">))</span>
+            <span class="n">cont_type</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_type</span><span class="p">)</span>
+                                 
+        <span class="n">X_train</span><span class="p">[</span><span class="n">cont_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">cont_type</span><span class="p">])</span>
+        <span class="n">X_test</span><span class="p">[</span><span class="n">cont_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">cont_type</span><span class="p">])</span>
+        <span class="n">scaler_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">StandardScaler&#39;</span>
+        <span class="n">save_obj</span><span class="p">(</span><span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transform_y</span><span class="p">:</span>
+            <span class="n">scaler_y</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">y_test</span> <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">scaler_y_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">StandardScaler_y&#39;</span>
+            <span class="n">save_obj</span><span class="p">(</span><span class="n">scaler_y</span><span class="p">,</span> <span class="n">scaler_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">transform_y</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span>
+    
+    <span class="k">elif</span> <span class="n">standardizer</span> <span class="o">==</span><span class="s1">&#39;MinMaxScaler&#39;</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cat_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="n">cont_type</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">id_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">id_type</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">cat_type</span><span class="o">==</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">id_type</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cont_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">cat_type</span><span class="p">))</span>
+            <span class="n">cont_type</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">id_type</span><span class="p">)</span>
+                                 
+        <span class="n">X_train</span><span class="p">[</span><span class="n">cont_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">cont_type</span><span class="p">])</span>
+        <span class="n">X_test</span><span class="p">[</span><span class="n">cont_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">cont_type</span><span class="p">])</span>
+        <span class="n">scaler_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">MinMaxScaler&#39;</span>
+        <span class="n">save_obj</span><span class="p">(</span><span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transform_y</span><span class="p">:</span>
+            <span class="n">scaler_y</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">y_test</span> <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">scaler_y_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">MinMaxScaler_y&#39;</span>
+            <span class="n">save_obj</span><span class="p">(</span><span class="n">scaler_y</span><span class="p">,</span> <span class="n">scaler_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">transform_y</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;standardizer can either be StandardScaler or MinMaxScaler&#39;</span><span class="p">)</span>    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">id_type</span><span class="o">=</span><span class="s1">&#39;Id&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_y</span> <span class="o">=</span> <span class="n">cont_standardize</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">cat_type</span><span class="o">=</span><span class="n">categorical_type</span><span class="p">,</span> <span class="n">id_type</span><span class="o">=</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="n">transform_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>Fake_date_2Week</th>
+      <th>Fake_Week</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>...</th>
+      <th>Fake_date_2Day</th>
+      <th>Fake_date_2Dayofweek</th>
+      <th>Fake_date_2Dayofyear</th>
+      <th>Fake_date_2Is_month_end</th>
+      <th>Fake_date_2Is_month_start</th>
+      <th>Fake_date_2Is_quarter_end</th>
+      <th>Fake_date_2Is_quarter_start</th>
+      <th>Fake_date_2Is_year_end</th>
+      <th>Fake_date_2Is_year_start</th>
+      <th>Fake_date_2Elapsed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>744</th>
+      <td>0.043062</td>
+      <td>3</td>
+      <td>-1.147645</td>
+      <td>1.484951</td>
+      <td>1.160387</td>
+      <td>-0.511627</td>
+      <td>1</td>
+      <td>7</td>
+      <td>0.716393</td>
+      <td>1</td>
+      <td>...</td>
+      <td>-0.455404</td>
+      <td>1.448463</td>
+      <td>1.544753</td>
+      <td>-0.15861</td>
+      <td>-0.186871</td>
+      <td>-0.101639</td>
+      <td>-0.111456</td>
+      <td>0.0</td>
+      <td>-0.064084</td>
+      <td>-1.213687</td>
+    </tr>
+    <tr>
+      <th>492</th>
+      <td>-0.554919</td>
+      <td>3</td>
+      <td>1.391675</td>
+      <td>-0.384396</td>
+      <td>-0.232891</td>
+      <td>0.521756</td>
+      <td>1</td>
+      <td>5</td>
+      <td>1.155090</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.557602</td>
+      <td>-0.500088</td>
+      <td>-0.401376</td>
+      <td>-0.15861</td>
+      <td>-0.186871</td>
+      <td>-0.101639</td>
+      <td>-0.111456</td>
+      <td>0.0</td>
+      <td>-0.064084</td>
+      <td>-1.640805</td>
+    </tr>
+    <tr>
+      <th>307</th>
+      <td>-0.993913</td>
+      <td>4</td>
+      <td>NaN</td>
+      <td>-1.252306</td>
+      <td>-1.029050</td>
+      <td>-0.255387</td>
+      <td>1</td>
+      <td>5</td>
+      <td>-1.747058</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.670158</td>
+      <td>1.448463</td>
+      <td>-1.250422</td>
+      <td>-0.15861</td>
+      <td>-0.186871</td>
+      <td>-0.101639</td>
+      <td>-0.111456</td>
+      <td>0.0</td>
+      <td>-0.064084</td>
+      <td>-0.513396</td>
+    </tr>
+    <tr>
+      <th>985</th>
+      <td>0.614941</td>
+      <td>3</td>
+      <td>-0.076369</td>
+      <td>-0.117346</td>
+      <td>0.032495</td>
+      <td>0.044997</td>
+      <td>1</td>
+      <td>4</td>
+      <td>-0.734681</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0.895271</td>
+      <td>1.448463</td>
+      <td>-0.086561</td>
+      <td>-0.15861</td>
+      <td>-0.186871</td>
+      <td>-0.101639</td>
+      <td>-0.111456</td>
+      <td>0.0</td>
+      <td>-0.064084</td>
+      <td>0.043000</td>
+    </tr>
+    <tr>
+      <th>484</th>
+      <td>-0.573903</td>
+      <td>3</td>
+      <td>NaN</td>
+      <td>0.149703</td>
+      <td>-0.630971</td>
+      <td>-0.271827</td>
+      <td>1</td>
+      <td>4</td>
+      <td>-0.329730</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.107377</td>
+      <td>-1.474364</td>
+      <td>0.132856</td>
+      <td>-0.15861</td>
+      <td>-0.186871</td>
+      <td>-0.101639</td>
+      <td>-0.111456</td>
+      <td>0.0</td>
+      <td>-0.064084</td>
+      <td>0.887644</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 35 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[-0.02988161],
+       [-0.11953991],
+       [-1.1544938 ],
+       [-0.71334758],
+       [-0.62014767]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have now saved our StandardScaler to path and transformed the data the way we wanted it. To see the "real" values of our y_train we simply invert our standardizer:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler_y</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[180000.],
+       [172785.],
+       [ 89500.],
+       [125000.],
+       [132500.]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Beautiful! And now I want to show you how incredibly quickly we can now setup our data. I deleted everything in memory and started from here.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Complete-run-through">Complete run-through<a class="anchor-link" href="#Complete-run-through"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;train.csv&#39;</span><span class="p">)</span>
+<span class="n">to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="s1">&#39;MSZoning&#39;</span><span class="p">,</span> <span class="s1">&#39;LotFrontage&#39;</span><span class="p">,</span> <span class="s1">&#39;LotArea&#39;</span><span class="p">,</span> <span class="s1">&#39;Street&#39;</span><span class="p">,</span> <span class="s1">&#39;OverallQual&#39;</span><span class="p">,</span> <span class="s1">&#39;YearBuilt&#39;</span><span class="p">,</span> <span class="s1">&#39;CentralAir&#39;</span><span class="p">,</span> <span class="s1">&#39;SaleType&#39;</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">to_keep</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Fake_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;1980-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>SaleType</th>
+      <th>SalePrice</th>
+      <th>Fake_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2003</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>208500</td>
+      <td>1988-10-01T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>6</td>
+      <td>1976</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>181500</td>
+      <td>1989-05-17T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>11250</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>2001</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>223500</td>
+      <td>1992-09-20T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>RL</td>
+      <td>60.0</td>
+      <td>9550</td>
+      <td>Pave</td>
+      <td>7</td>
+      <td>1915</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>140000</td>
+      <td>1984-08-11T00:00:00.000000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>RL</td>
+      <td>84.0</td>
+      <td>14260</td>
+      <td>Pave</td>
+      <td>8</td>
+      <td>2000</td>
+      <td>Y</td>
+      <td>WD</td>
+      <td>250000</td>
+      <td>1986-04-07T00:00:00.000000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fake_date&#39;</span><span class="p">]</span>
+<span class="n">continuous_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LotFrontage&#39;</span><span class="p">,</span> <span class="s1">&#39;LotArea&#39;</span><span class="p">,</span> <span class="s1">&#39;YearBuilt&#39;</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span>
+<span class="n">categorical_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MSZoning&#39;</span><span class="p">,</span> <span class="s1">&#39;Street&#39;</span><span class="p">,</span> <span class="s1">&#39;OverallQual&#39;</span><span class="p">,</span> <span class="s1">&#39;SaleType&#39;</span><span class="p">,</span><span class="s1">&#39;CentralAir&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_1</span> <span class="o">=</span> <span class="n">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_type</span><span class="p">,</span> <span class="n">continuous_type</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dep_var</span> <span class="o">=</span> <span class="s1">&#39;SalePrice&#39;</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dep_var</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_1</span><span class="p">,</span> <span class="n">x_cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="n">dep_var</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">dict_list</span><span class="p">,</span> <span class="n">dict_inv_list</span> <span class="o">=</span> <span class="n">cat_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_y</span> <span class="o">=</span> <span class="n">cont_standardize</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">cat_type</span><span class="o">=</span><span class="n">categorical_type</span><span class="p">,</span> <span class="n">id_type</span><span class="o">=</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="n">transform_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>Fake_Week</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>OverallQual</th>
+      <th>YearBuilt</th>
+      <th>CentralAir</th>
+      <th>SaleType</th>
+      <th>...</th>
+      <th>Fake_Day</th>
+      <th>Fake_Dayofweek</th>
+      <th>Fake_Dayofyear</th>
+      <th>Fake_Is_month_end</th>
+      <th>Fake_Is_month_start</th>
+      <th>Fake_Is_quarter_end</th>
+      <th>Fake_Is_quarter_start</th>
+      <th>Fake_Is_year_end</th>
+      <th>Fake_Is_year_start</th>
+      <th>Fake_Elapsed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>253</th>
+      <td>254</td>
+      <td>3</td>
+      <td>0.570755</td>
+      <td>-0.515555</td>
+      <td>-0.113494</td>
+      <td>1</td>
+      <td>5</td>
+      <td>-0.242016</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>-1.189170</td>
+      <td>-1.484321</td>
+      <td>-0.556901</td>
+      <td>-0.171679</td>
+      <td>-0.180928</td>
+      <td>-0.111456</td>
+      <td>-0.106655</td>
+      <td>-0.064084</td>
+      <td>-0.045268</td>
+      <td>-1.648408</td>
+    </tr>
+    <tr>
+      <th>1185</th>
+      <td>1186</td>
+      <td>3</td>
+      <td>-0.416423</td>
+      <td>0.870733</td>
+      <td>-0.079594</td>
+      <td>1</td>
+      <td>4</td>
+      <td>-1.588959</td>
+      <td>1</td>
+      <td>8</td>
+      <td>...</td>
+      <td>-0.623669</td>
+      <td>1.480279</td>
+      <td>0.922893</td>
+      <td>-0.171679</td>
+      <td>-0.180928</td>
+      <td>-0.111456</td>
+      <td>-0.106655</td>
+      <td>-0.064084</td>
+      <td>-0.045268</td>
+      <td>-1.231187</td>
+    </tr>
+    <tr>
+      <th>515</th>
+      <td>516</td>
+      <td>3</td>
+      <td>0.926139</td>
+      <td>0.540664</td>
+      <td>0.137262</td>
+      <td>1</td>
+      <td>9</td>
+      <td>1.273295</td>
+      <td>1</td>
+      <td>6</td>
+      <td>...</td>
+      <td>1.525232</td>
+      <td>-0.496121</td>
+      <td>0.536450</td>
+      <td>-0.171679</td>
+      <td>-0.180928</td>
+      <td>-0.111456</td>
+      <td>-0.106655</td>
+      <td>-0.064084</td>
+      <td>-0.045268</td>
+      <td>-0.907465</td>
+    </tr>
+    <tr>
+      <th>433</th>
+      <td>434</td>
+      <td>3</td>
+      <td>1.163061</td>
+      <td>0.012555</td>
+      <td>0.016602</td>
+      <td>1</td>
+      <td>5</td>
+      <td>0.869212</td>
+      <td>1</td>
+      <td>8</td>
+      <td>...</td>
+      <td>-0.962969</td>
+      <td>0.986179</td>
+      <td>0.036902</td>
+      <td>-0.171679</td>
+      <td>-0.180928</td>
+      <td>-0.111456</td>
+      <td>-0.106655</td>
+      <td>-0.064084</td>
+      <td>-0.045268</td>
+      <td>-0.932367</td>
+    </tr>
+    <tr>
+      <th>1406</th>
+      <td>1407</td>
+      <td>3</td>
+      <td>-0.021552</td>
+      <td>-0.911637</td>
+      <td>-0.192566</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0.027373</td>
+      <td>1</td>
+      <td>8</td>
+      <td>...</td>
+      <td>1.412132</td>
+      <td>0.986179</td>
+      <td>-0.924493</td>
+      <td>-0.171679</td>
+      <td>-0.180928</td>
+      <td>-0.111456</td>
+      <td>-0.106655</td>
+      <td>-0.064084</td>
+      <td>-0.045268</td>
+      <td>1.422486</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 22 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[-0.2703821 ],
+       [-0.96272526],
+       [ 2.92223258],
+       [ 0.02950289],
+       [-0.59634404]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Absolutely brilliant. Look how easy and fast we pre-processed our data. We now can start any Machine Learning Algorithm we want. It's super easy to replicate the results, because we saved the mapping and the scaler. We automatically created train and testset, we are flexible to use this in any way we want to split our data. I hope this will come in handy for your next machine learning project.</p>
+<p>Stay tuned for the next blogpost!</p>
+<p>Lasse</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/fastpages_/2020/10/22/How-to-preprocess-data-for-machine-learning.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastpages_/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/fastpages_/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/fastpages_/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lschmiddey" title="lschmiddey"><svg class="svg-icon grey"><use xlink:href="/fastpages_/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
