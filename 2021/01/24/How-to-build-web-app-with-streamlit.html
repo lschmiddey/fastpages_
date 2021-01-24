@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to build a web app with Streamlit | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="How to build a web app with Streamlit" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-24T00:00:00-06:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"How to build a web app with Streamlit","dateModified":"2021-01-24T00:00:00-06:00","datePublished":"2021-01-24T00:00:00-06:00","url":"https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastpages_/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to build a web app with Streamlit | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="How to build a web app with Streamlit" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-24T00:00:00-06:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"How to build a web app with Streamlit","dateModified":"2021-01-24T00:00:00-06:00","datePublished":"2021-01-24T00:00:00-06:00","url":"https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/fastpages_/">Data Science Blog von lschmiddey</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastpages_/about/">About Me</a><a class="page-link" href="/fastpages_/search/">Search</a><a class="page-link" href="/fastpages_/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to build a web app with Streamlit</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-24T00:00:00-06:00" itemprop="datePublished">
+        Jan 24, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lschmiddey/fastpages_/tree/master/_notebooks/2021-01-24-How-to-build-web-app-with-streamlit.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/fastpages_/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lschmiddey/fastpages_/master?filepath=_notebooks%2F2021-01-24-How-to-build-web-app-with-streamlit.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lschmiddey/fastpages_/blob/master/_notebooks/2021-01-24-How-to-build-web-app-with-streamlit.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-24-How-to-build-web-app-with-streamlit.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Combine-Streamlit-and-Heroku-to-easily-build-and-deploy-a-machine-learning-web-app">Combine Streamlit and Heroku to easily build and deploy a machine learning web-app<a class="anchor-link" href="#Combine-Streamlit-and-Heroku-to-easily-build-and-deploy-a-machine-learning-web-app"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this blog post I want to show how easy it is to build a web application with <a href="https://www.streamlit.io/">Streamlit</a> and then use <a href="https://dashboard.heroku.com/">Heroku</a> to deploy it and make it accessible for everyone. For this small web-app, I want to detect blobs in a given image. Furthermore, I want to be able to fiddle around with the parameters within the model and see the results immediately on the webpage. So let's first start with building our python program to detect blobs.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For this, we will make use of opencv-python, which already has a class with which we can detect blobs in images: the <a href="https://docs.opencv.org/3.4/d8/da7/structcv_1_1SimpleBlobDetector_1_1Params.html">SimpleBlobDetector</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+
+<span class="n">blob_params</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SimpleBlobDetector_Params</span><span class="p">()</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">filterByInertia</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">filterByConvexity</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">filterByColor</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">blobColor</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">filterByCircularity</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">filterByArea</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">blob_detector</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SimpleBlobDetector_create</span><span class="p">(</span><span class="n">blob_params</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These are some of the parameters the class has got. Next, we fetch an image and use the algorithm to detect the biggest blob detected.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keypoints</span> <span class="o">=</span> <span class="n">blob_detector</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">openCVim</span><span class="p">)</span>
+
+<span class="c1"># find largest blob</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keypoints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">kp_max</span> <span class="o">=</span> <span class="n">keypoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">kp</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kp</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">kp_max</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">kp_max</span> <span class="o">=</span> <span class="n">kp</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And that's pretty much it. openCVim will be the input of our model, and kp_max the keypoint with the biggest size. What we need now is streamlit to easily create a webpage which will use this model.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">streamlit</span> <span class="k">as</span> <span class="nn">st</span>
+
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"># Simple Blob Detection App</span>
+<span class="s2">Upload your image and see where the Blob is!</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s1">&#39;User Input Parameters&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It's that easy. We created a header for our webpage and a sidebar with a different header. In this sidebar, we want to be able to fiddle around with some of the blob_params.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">user_input_features</span><span class="p">():</span>
+    <span class="n">minCircularity</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s1">&#39;minCircularity&#39;</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">minArea</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s1">&#39;minArea&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">maxArea</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">sidebar</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s1">&#39;maxArea&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;minCircularity&#39;</span><span class="p">:</span> <span class="n">minCircularity</span><span class="p">,</span>
+            <span class="s1">&#39;minArea&#39;</span><span class="p">:</span> <span class="n">minArea</span><span class="p">,</span>
+            <span class="s1">&#39;maxArea&#39;</span><span class="p">:</span> <span class="n">maxArea</span><span class="p">}</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">features</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">user_input_features</span><span class="p">()</span>
+
+<span class="n">blob_params</span><span class="o">.</span><span class="n">minCircularity</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">minCircularity</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">minArea</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">minArea</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">blob_params</span><span class="o">.</span><span class="n">maxArea</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">maxArea</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">st</span><span class="o">.</span><span class="n">subheader</span><span class="p">(</span><span class="s1">&#39;User Input parameters&#39;</span><span class="p">)</span>
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We defined a function, which uses streamlits sidebar.slider function. The first value is the lowest value the slider can be, the second the largest value the slider can be and the last value is the default value. We then use these values to create a dataframe, which we use to fill the blob_params. So each time the user changes one of the values via the slider, the model get's a different parameter input and will automatically rerun the model. With st.subheader we give a subheader and then show the dataframe to the user with the chosen parameters.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">uploaded_file</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">file_uploader</span><span class="p">(</span><span class="s2">&quot;Choose an image...&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;jpg&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">uploaded_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>   
+    <span class="c1"># Read in and make greyscale</span>
+    <span class="n">PILim</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">uploaded_file</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span>
+    <span class="c1"># Make Numpy/OpenCV-compatible version</span>
+    <span class="n">openCVim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">PILim</span><span class="p">)</span>
+    <span class="n">openCVim</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bitwise_not</span><span class="p">(</span><span class="n">openCVim</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">openCVim</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="s1">&#39;Uploaded Image.&#39;</span><span class="p">,</span> <span class="n">use_column_width</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, the user should upload an image. Only when this file is not None we will proceed with our modeling. We read the image in with PIL, put it to grayscale (in my experience for blob-detection that worked better) and transform it to an numpy array, which cv2 needs to create the model.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keypoints</span> <span class="o">=</span> <span class="n">blob_detector</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">openCVim</span><span class="p">)</span>
+
+<span class="c1"># find largest blob</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keypoints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">kp_max</span> <span class="o">=</span> <span class="n">keypoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">kp</span> <span class="ow">in</span> <span class="n">keypoints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kp</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">kp_max</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">kp_max</span> <span class="o">=</span> <span class="n">kp</span>
+
+<span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">kp_max</span><span class="o">.</span><span class="n">pt</span><span class="p">])</span>
+
+<span class="n">data_coordinates</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x_coordinate&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span>
+        <span class="s1">&#39;y_coordinate&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])}</span>    
+<span class="n">df_coordinates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_coordinates</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   
+
+<span class="n">im_with_keypoints</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">openCVim</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
+<span class="c1">#     im_with_keypoints = cv2.circle(openCVim, (int(pts[:, 0]), int(pts[:, 1])), 50, color=(0,255,0), thickness=30, lineType=8, shift=0)</span>
+<span class="n">im_with_keypoints</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">drawKeypoints</span><span class="p">(</span><span class="n">im_with_keypoints</span><span class="p">,</span> <span class="p">[</span><span class="n">kp_max</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS</span><span class="p">)</span>
+
+<span class="n">st</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">im_with_keypoints</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="s1">&#39;Image with Blob.&#39;</span><span class="p">,</span> <span class="n">use_column_width</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">df_coordinates</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Still in the if statement we progress by building the model, get the biggest blob and get the coordinates by calling kp_max.pt. We store these values in a dictionary to put it in a dataframe, which we show at the end of the page. We also use the coordinates to mark the calculated keypoint. Finally, we return the image with a circle around the detected image to the user.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And that's it, we build a fully functional web-app with streamlit. Finally, we want to deploy it on Heroku. After creating an account it should look something like this:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/heroku_01.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Click on "Create new App".</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/heroku_02.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/heroku_03.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Use your git-repository to let Heroku deploy the web-app for you, click on connect and your done! It's that easy. Heroku requires three more files in your repository:</p>
+<p>⋅⋅<em> requirements.txt, where you specify the packages you use and the respective version
+⋅⋅</em> Procfile, which tells Heroku how to start the Streamlit-app
+⋅⋅* setup.sh, which is a shell script which tells the Heroku server how to deploy the Streamlit-app</p>
+<p>Simply check out my <a href="https://github.com/lschmiddey/blob_detection_app">git repository</a> for an example.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After all is said and done, this is how the app looks like:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/streamlit_01.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/streamlit_02.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastpages_/images/copied_from_nb/./Images/Streamlit-Heroku/streamlit_03.PNG" alt="image info" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Or simply check out the <a href="https://blob-detection.herokuapp.com/">web-page</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I hope you enjoyed this post and stay tuned for the next one.</p>
+<p>Lasse</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/fastpages_/2021/01/24/How-to-build-web-app-with-streamlit.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastpages_/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/fastpages_/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/fastpages_/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lschmiddey" title="lschmiddey"><svg class="svg-icon grey"><use xlink:href="/fastpages_/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
