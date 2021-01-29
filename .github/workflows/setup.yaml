@@ -14,7 +14,7 @@ jobs:
 
     - name: Copy Repository Contents
       uses: actions/checkout@v2
-        
+
     - name: modify files
       run: |
         import re, os
@@ -35,7 +35,7 @@ jobs:
         assert config_path.exists(), 'Did not find _config.yml in the current directory!'
         assert pr_msg_path.exists(), 'Did not find _fastpages_docs/_setup_pr_template.md in the current directory!'
         assert settings.exists(), 'Did not find _action_files/settings.ini in the current directory!'
-        
+
         # edit settings.ini file to inject baseurl
         config.read(settings)
         config['DEFAULT']['baseurl'] = f'/{repo_name}'
@@ -45,7 +45,7 @@ jobs:
         # replace content of README with template
         readme = readme_template_path.read_text().replace('{_username_}', username).replace('{_repo_name_}', repo_name)
         readme_path.write_text(readme)
-        
+
         # update _config.yml
         cfg = config_path.read_text()
         cfg = re.sub(r'^(github_username: )(fastai)', fr'\g<1>{username}', cfg, flags=re.MULTILINE)
@@ -61,7 +61,7 @@ jobs:
       shell: python
 
     - name: commit changes
-      run: |
+            run: |
         git config --global user.email "${GH_EMAIL}"
         git config --global user.name "${GH_USERNAME}"
         git checkout -B fastpages-automated-setup
@@ -78,7 +78,7 @@ jobs:
         git add _config.yml README.md _fastpages_docs/ _action_files/settings.ini
         git commit -m'setup repo'
         git push -f --set-upstream origin fastpages-automated-setup
-      env: 
+      env:
         GH_EMAIL: ${{ github.event.commits[0].author.email }}
         GH_USERNAME: ${{ github.event.commits[0].author.username }}
 
