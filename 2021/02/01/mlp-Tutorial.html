@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      4 min read
     
 </span></p>
 
@@ -381,6 +381,1159 @@ window.onload = wrap_img;
 </div>
     
 
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineID&#39;</span><span class="p">,</span> <span class="s1">&#39;saledate&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineHoursCurrentMeter&#39;</span><span class="p">,</span> <span class="s1">&#39;UsageBand&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">to_keep</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SalePrice</th>
+      <th>MachineID</th>
+      <th>saledate</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>66000.0</td>
+      <td>999089</td>
+      <td>11/16/2006 0:00</td>
+      <td>68.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>57000.0</td>
+      <td>117657</td>
+      <td>3/26/2004 0:00</td>
+      <td>4640.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10000.0</td>
+      <td>434808</td>
+      <td>2/26/2004 0:00</td>
+      <td>2838.0</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>38500.0</td>
+      <td>1026470</td>
+      <td>5/19/2011 0:00</td>
+      <td>3486.0</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11000.0</td>
+      <td>1057373</td>
+      <td>7/23/2009 0:00</td>
+      <td>722.0</td>
+      <td>Medium</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="mlp-Functions">mlp Functions<a class="anchor-link" href="#mlp-Functions"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="df_to_type">df_to_type<a class="anchor-link" href="#df_to_type"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;saledate&#39;</span><span class="p">]</span>
+<span class="n">continuous_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineHoursCurrentMeter&#39;</span><span class="p">]</span>
+<span class="n">categorical_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MachineID&#39;</span><span class="p">,</span> <span class="s1">&#39;UsageBand&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">df_to_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_type</span><span class="p">,</span> <span class="n">continuous_type</span><span class="p">,</span> <span class="n">categorical_type</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SalePrice</th>
+      <th>MachineID</th>
+      <th>saleWeek</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saleYear</th>
+      <th>saleMonth</th>
+      <th>saleDay</th>
+      <th>saleDayofweek</th>
+      <th>saleDayofyear</th>
+      <th>saleIs_month_end</th>
+      <th>saleIs_month_start</th>
+      <th>saleIs_quarter_end</th>
+      <th>saleIs_quarter_start</th>
+      <th>saleIs_year_end</th>
+      <th>saleIs_year_start</th>
+      <th>saleElapsed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>66000.0</td>
+      <td>999089</td>
+      <td>46</td>
+      <td>68.0</td>
+      <td>Low</td>
+      <td>2006</td>
+      <td>11</td>
+      <td>16</td>
+      <td>3</td>
+      <td>320</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1163635200</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>57000.0</td>
+      <td>117657</td>
+      <td>13</td>
+      <td>4640.0</td>
+      <td>Low</td>
+      <td>2004</td>
+      <td>3</td>
+      <td>26</td>
+      <td>4</td>
+      <td>86</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1080259200</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10000.0</td>
+      <td>434808</td>
+      <td>9</td>
+      <td>2838.0</td>
+      <td>High</td>
+      <td>2004</td>
+      <td>2</td>
+      <td>26</td>
+      <td>3</td>
+      <td>57</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1077753600</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>38500.0</td>
+      <td>1026470</td>
+      <td>20</td>
+      <td>3486.0</td>
+      <td>High</td>
+      <td>2011</td>
+      <td>5</td>
+      <td>19</td>
+      <td>3</td>
+      <td>139</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1305763200</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11000.0</td>
+      <td>1057373</td>
+      <td>30</td>
+      <td>722.0</td>
+      <td>Medium</td>
+      <td>2009</td>
+      <td>7</td>
+      <td>23</td>
+      <td>3</td>
+      <td>204</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>1248307200</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We automatically extracted some extra information from the date variable and transformed the categorical variables to the correct type.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>SalePrice                    float64
+MachineID                   category
+saleWeek                      UInt32
+MachineHoursCurrentMeter     float64
+UsageBand                   category
+saleYear                       int64
+saleMonth                      int64
+saleDay                        int64
+saleDayofweek                  int64
+saleDayofyear                  int64
+saleIs_month_end                bool
+saleIs_month_start              bool
+saleIs_quarter_end              bool
+saleIs_quarter_start            bool
+saleIs_year_end                 bool
+saleIs_year_start               bool
+saleElapsed                   object
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's only keep the saleYear and saleMonth from our date variable.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineID&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineHoursCurrentMeter&#39;</span><span class="p">,</span> <span class="s1">&#39;UsageBand&#39;</span><span class="p">,</span> <span class="s1">&#39;saleYear&#39;</span><span class="p">,</span> <span class="s1">&#39;saleMonth&#39;</span><span class="p">]</span>
+<span class="n">continuous_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="s1">&#39;MachineHoursCurrentMeter&#39;</span><span class="p">]</span>
+<span class="n">categorical_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MachineID&#39;</span><span class="p">,</span> <span class="s1">&#39;UsageBand&#39;</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">to_keep</span><span class="p">]</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SalePrice</th>
+      <th>MachineID</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saleYear</th>
+      <th>saleMonth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>66000.0</td>
+      <td>999089</td>
+      <td>68.0</td>
+      <td>Low</td>
+      <td>2006</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>57000.0</td>
+      <td>117657</td>
+      <td>4640.0</td>
+      <td>Low</td>
+      <td>2004</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10000.0</td>
+      <td>434808</td>
+      <td>2838.0</td>
+      <td>High</td>
+      <td>2004</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>38500.0</td>
+      <td>1026470</td>
+      <td>3486.0</td>
+      <td>High</td>
+      <td>2011</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11000.0</td>
+      <td>1057373</td>
+      <td>722.0</td>
+      <td>Medium</td>
+      <td>2009</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="split_df">split_df<a class="anchor-link" href="#split_df"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, let's split the data into train and test, first randomly, then by a variable, then by a condition.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">split_df</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((288888, 5), (123810, 5))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">split_df</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;on_split_id&#39;</span><span class="p">,</span> <span class="n">split_var</span><span class="o">=</span><span class="s1">&#39;MachineID&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((276523, 5), (136175, 5))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#every row that fulfills this condition will be in the trainset</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">saleYear</span><span class="o">&lt;</span><span class="mi">2009</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">split_df</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dep_var</span><span class="o">=</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">split_mode</span><span class="o">=</span><span class="s1">&#39;on_condition&#39;</span><span class="p">,</span> <span class="n">cond</span><span class="o">=</span><span class="n">cond</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>((288689, 5), (124009, 5))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MachineID</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saleYear</th>
+      <th>saleMonth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>999089</td>
+      <td>68.0</td>
+      <td>Low</td>
+      <td>2006</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>117657</td>
+      <td>4640.0</td>
+      <td>Low</td>
+      <td>2004</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>434808</td>
+      <td>2838.0</td>
+      <td>High</td>
+      <td>2004</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1001274</td>
+      <td>508.0</td>
+      <td>Low</td>
+      <td>2008</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>772701</td>
+      <td>11540.0</td>
+      <td>High</td>
+      <td>2004</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="cat_transform">cat_transform<a class="anchor-link" href="#cat_transform"> </a></h4>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train_</span><span class="p">,</span> <span class="n">X_test_</span><span class="p">,</span> <span class="n">dict_list</span><span class="p">,</span> <span class="n">dict_inv_list</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">cat_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">cat_type</span> <span class="o">=</span> <span class="n">categorical_type</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MachineID</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saleYear</th>
+      <th>saleMonth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62273</td>
+      <td>68.0</td>
+      <td>2</td>
+      <td>2006</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9581</td>
+      <td>4640.0</td>
+      <td>2</td>
+      <td>2004</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>28730</td>
+      <td>2838.0</td>
+      <td>1</td>
+      <td>2004</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>62837</td>
+      <td>508.0</td>
+      <td>2</td>
+      <td>2008</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>48637</td>
+      <td>11540.0</td>
+      <td>1</td>
+      <td>2004</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We changed the defined categorical types to int and saved the corresponding dictionaries. Also, we added a special token for NaN values.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dict_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{0: &#39;#NaN&#39;, 1: &#39;High&#39;, 2: &#39;Low&#39;, 3: &#39;Medium&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="cont_standardize">cont_standardize<a class="anchor-link" href="#cont_standardize"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's standardize the data. If we want specific columns to not be standardized, we can put them into the cat_type argument. If we have an ID to later match the results to, put it into the id_type argument and it will not be standardized. If you don't want the dependend variable to be standardized, set transform_y to False (also realize that you will not get the scaler_y object as an output).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MachineID&#39;</span><span class="p">,</span> <span class="s1">&#39;UsageBand&#39;</span><span class="p">,</span> <span class="s1">&#39;saleYear&#39;</span><span class="p">,</span> <span class="s1">&#39;saleMonth&#39;</span><span class="p">]</span>
+<span class="n">X_train_2</span><span class="p">,</span> <span class="n">X_test_2</span><span class="p">,</span> <span class="n">y_train_2</span><span class="p">,</span> <span class="n">y_test_2</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">scaler_y</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">cont_standardize</span><span class="p">(</span><span class="n">X_train_</span><span class="p">,</span> <span class="n">X_test_</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">cat_type</span><span class="o">=</span><span class="n">categorical_type</span><span class="p">,</span> <span class="n">transform_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">standardizer</span><span class="o">=</span><span class="s1">&#39;StandardScaler&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    66000.0
+1    57000.0
+2    10000.0
+5    26500.0
+6    21000.0
+Name: SalePrice, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_train_2</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[ 1.53656444],
+       [ 1.14173911],
+       [-0.92012647],
+       [-0.19628004],
+       [-0.43756218]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train_2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MachineID</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saleYear</th>
+      <th>saleMonth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62273</td>
+      <td>-0.372846</td>
+      <td>2</td>
+      <td>2006</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9581</td>
+      <td>0.893532</td>
+      <td>2</td>
+      <td>2004</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>28730</td>
+      <td>0.394404</td>
+      <td>1</td>
+      <td>2004</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>62837</td>
+      <td>-0.250972</td>
+      <td>2</td>
+      <td>2008</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>48637</td>
+      <td>2.804732</td>
+      <td>1</td>
+      <td>2004</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>saleYear and saleMonth didn't get standardized, also the categorical variables didn't get standardized.</p>
+
+</div>
+</div>
+</div>
 </div>
 
 
