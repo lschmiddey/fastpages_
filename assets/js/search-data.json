@@ -3,7 +3,7 @@
     
         "post0": {
             "title": "MLP Tutorial",
-            "content": "",
+            "content": "How to make use of the ml-prepare package . import mlprepare as mlp import pandas as pd import numpy . Load Data . df = pd.read_csv(&#39;TrainAndValid.csv&#39;, low_memory=False) . df.head() . SalesID SalePrice MachineID ModelID datasource auctioneerID YearMade MachineHoursCurrentMeter UsageBand saledate ... Undercarriage_Pad_Width Stick_Length Thumb Pattern_Changer Grouser_Type Backhoe_Mounting Blade_Type Travel_Controls Differential_Type Steering_Controls . 0 1139246 | 66000.0 | 999089 | 3157 | 121 | 3.0 | 2004 | 68.0 | Low | 11/16/2006 0:00 | ... | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | Standard | Conventional | . 1 1139248 | 57000.0 | 117657 | 77 | 121 | 3.0 | 1996 | 4640.0 | Low | 3/26/2004 0:00 | ... | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | Standard | Conventional | . 2 1139249 | 10000.0 | 434808 | 7009 | 121 | 3.0 | 2001 | 2838.0 | High | 2/26/2004 0:00 | ... | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | . 3 1139251 | 38500.0 | 1026470 | 332 | 121 | 3.0 | 2001 | 3486.0 | High | 5/19/2011 0:00 | ... | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | . 4 1139253 | 11000.0 | 1057373 | 17311 | 121 | 3.0 | 2007 | 722.0 | Medium | 7/23/2009 0:00 | ... | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | . 5 rows × 53 columns .",
             "url": "https://lschmiddey.github.io/fastpages_/2021/02/01/mlp-Tutorial.html",
             "relUrl": "/2021/02/01/mlp-Tutorial.html",
             "date": " • Feb 1, 2021"

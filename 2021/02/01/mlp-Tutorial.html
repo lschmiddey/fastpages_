@@ -136,6 +136,251 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-to-make-use-of-the-ml-prepare-package">How to make use of the ml-prepare package<a class="anchor-link" href="#How-to-make-use-of-the-ml-prepare-package"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">mlprepare</span> <span class="k">as</span> <span class="nn">mlp</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Load-Data">Load Data<a class="anchor-link" href="#Load-Data"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;TrainAndValid.csv&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SalesID</th>
+      <th>SalePrice</th>
+      <th>MachineID</th>
+      <th>ModelID</th>
+      <th>datasource</th>
+      <th>auctioneerID</th>
+      <th>YearMade</th>
+      <th>MachineHoursCurrentMeter</th>
+      <th>UsageBand</th>
+      <th>saledate</th>
+      <th>...</th>
+      <th>Undercarriage_Pad_Width</th>
+      <th>Stick_Length</th>
+      <th>Thumb</th>
+      <th>Pattern_Changer</th>
+      <th>Grouser_Type</th>
+      <th>Backhoe_Mounting</th>
+      <th>Blade_Type</th>
+      <th>Travel_Controls</th>
+      <th>Differential_Type</th>
+      <th>Steering_Controls</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1139246</td>
+      <td>66000.0</td>
+      <td>999089</td>
+      <td>3157</td>
+      <td>121</td>
+      <td>3.0</td>
+      <td>2004</td>
+      <td>68.0</td>
+      <td>Low</td>
+      <td>11/16/2006 0:00</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Standard</td>
+      <td>Conventional</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1139248</td>
+      <td>57000.0</td>
+      <td>117657</td>
+      <td>77</td>
+      <td>121</td>
+      <td>3.0</td>
+      <td>1996</td>
+      <td>4640.0</td>
+      <td>Low</td>
+      <td>3/26/2004 0:00</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Standard</td>
+      <td>Conventional</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1139249</td>
+      <td>10000.0</td>
+      <td>434808</td>
+      <td>7009</td>
+      <td>121</td>
+      <td>3.0</td>
+      <td>2001</td>
+      <td>2838.0</td>
+      <td>High</td>
+      <td>2/26/2004 0:00</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1139251</td>
+      <td>38500.0</td>
+      <td>1026470</td>
+      <td>332</td>
+      <td>121</td>
+      <td>3.0</td>
+      <td>2001</td>
+      <td>3486.0</td>
+      <td>High</td>
+      <td>5/19/2011 0:00</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1139253</td>
+      <td>11000.0</td>
+      <td>1057373</td>
+      <td>17311</td>
+      <td>121</td>
+      <td>3.0</td>
+      <td>2007</td>
+      <td>722.0</td>
+      <td>Medium</td>
+      <td>7/23/2009 0:00</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 53 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
 </div>
 
 
