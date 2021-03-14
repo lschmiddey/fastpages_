@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Variational Autoencoder | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Variational Autoencoder" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-14T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Variational Autoencoder","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastpages_/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Variational Autoencoder | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Variational Autoencoder" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-14T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Variational Autoencoder","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/fastpages_/">Data Science Blog von lschmiddey</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastpages_/about/">About Me</a><a class="page-link" href="/fastpages_/search/">Search</a><a class="page-link" href="/fastpages_/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Variational Autoencoder</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-14T00:00:00-06:00" itemprop="datePublished">
+        Mar 14, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      12 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lschmiddey/fastpages_/tree/master/_notebooks/2021-03-14-tabular-data-variational-autoencoder.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/fastpages_/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lschmiddey/fastpages_/master?filepath=_notebooks%2F2021-03-14-tabular-data-variational-autoencoder.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lschmiddey/fastpages_/blob/master/_notebooks/2021-03-14-tabular-data-variational-autoencoder.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-03-14-tabular-data-variational-autoencoder.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="How-to-create-fake-tabular-data-to-enhance-machine-learning-algorithms">How to create fake tabular data to enhance machine learning algorithms<a class="anchor-link" href="#How-to-create-fake-tabular-data-to-enhance-machine-learning-algorithms"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To train deeplearning models the more data the better. When we're thinking of image data, the deeplearnig community thought about a lot of tricks how to enhance the model given a dataset of images: image enhancement. Meaning that by rotating, flipping, blurring etc the image we can create more input data and also improve our model.</p>
+<p>Hoever, when thinking about tabular data, only few of these techniques exist. In this notebook I want to show you how to create a variational autoencoder to make use of data enhancement. I will create fake data, which is sampled from the learned distribution of the underlying data.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="n">device</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>device(type=&#39;cpu&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Define-path-to-dataset">Define path to dataset<a class="anchor-link" href="#Define-path-to-dataset"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">DATA_PATH</span> <span class="o">=</span> <span class="s1">&#39;data/wine.csv&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dataset-Overview">Dataset Overview<a class="anchor-link" href="#Dataset-Overview"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_base</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">df_base</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>14.23</td>
+      <td>1.71</td>
+      <td>2.43</td>
+      <td>15.6</td>
+      <td>127</td>
+      <td>2.80</td>
+      <td>3.06</td>
+      <td>0.28</td>
+      <td>2.29</td>
+      <td>5.64</td>
+      <td>1.04</td>
+      <td>3.92</td>
+      <td>1065</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.38</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>13.16</td>
+      <td>2.36</td>
+      <td>2.67</td>
+      <td>18.6</td>
+      <td>101</td>
+      <td>2.80</td>
+      <td>3.24</td>
+      <td>0.30</td>
+      <td>2.81</td>
+      <td>5.68</td>
+      <td>1.03</td>
+      <td>3.17</td>
+      <td>1185</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>14.37</td>
+      <td>1.95</td>
+      <td>2.50</td>
+      <td>16.8</td>
+      <td>113</td>
+      <td>3.85</td>
+      <td>3.49</td>
+      <td>0.24</td>
+      <td>2.18</td>
+      <td>7.80</td>
+      <td>0.86</td>
+      <td>3.45</td>
+      <td>1480</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>13.24</td>
+      <td>2.59</td>
+      <td>2.87</td>
+      <td>21.0</td>
+      <td>118</td>
+      <td>2.80</td>
+      <td>2.69</td>
+      <td>0.39</td>
+      <td>1.82</td>
+      <td>4.32</td>
+      <td>1.04</td>
+      <td>2.93</td>
+      <td>735</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">df_base</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Build-Data-Loader">Build Data Loader<a class="anchor-link" href="#Build-Data-Loader"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_and_standardize_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># read in from csv</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="c1"># replace nan with -99</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">-</span><span class="mi">99</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+    <span class="c1"># randomly split</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="c1"># standardize values</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>   
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">scaler</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="k">class</span> <span class="nc">DataBuilder</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardizer</span> <span class="o">=</span> <span class="n">load_and_standardize_data</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span> 
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>      
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">len</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">traindata_set</span><span class="o">=</span><span class="n">DataBuilder</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">testdata_set</span><span class="o">=</span><span class="n">DataBuilder</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">trainloader</span><span class="o">=</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">traindata_set</span><span class="p">,</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">testloader</span><span class="o">=</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">testdata_set</span><span class="p">,</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(torch.Tensor, torch.Tensor)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(torch.Size([124, 14]), torch.Size([54, 14]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>tensor([[ 1.3598,  0.6284,  1.0812,  ..., -0.6414, -1.0709, -0.5182],
+        [ 0.0628, -0.5409, -0.6130,  ...,  0.3465,  1.3308, -0.2151],
+        [ 0.0628, -0.7557, -1.2870,  ...,  0.4324, -0.3984,  0.0420],
+        ...,
+        [-1.2343,  1.6904, -0.4855,  ...,  1.0338,  0.5485,  2.6682],
+        [ 0.0628, -0.3261, -0.7952,  ...,  0.0029, -0.7415, -0.7983],
+        [ 0.0628, -0.7437,  0.0428,  ..., -0.6843,  1.0700, -0.9861]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">standardizer</span><span class="o">.</span><span class="n">inverse_transform</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;bound method StandardScaler.inverse_transform of StandardScaler()&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Build-model">Build model<a class="anchor-link" href="#Build-model"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Autoencoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">D_in</span><span class="p">,</span><span class="n">H</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">H2</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">latent_dim</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        
+        <span class="c1">#Encoder</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Autoencoder</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">D_in</span><span class="p">,</span><span class="n">H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear3</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H2</span><span class="p">,</span><span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">H2</span><span class="p">)</span>
+        
+<span class="c1">#         # Latent vectors mu and sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H2</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc21</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc22</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+
+<span class="c1">#         # Sampling vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc_bn3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc_bn4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">H2</span><span class="p">)</span>
+        
+<span class="c1">#         # Decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear4</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H2</span><span class="p">,</span><span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">H2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear5</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H2</span><span class="p">,</span><span class="n">H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear6</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">D_in</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn6</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">D_in</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">lin1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">lin2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_bn2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">lin1</span><span class="p">)))</span>
+        <span class="n">lin3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_bn3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear3</span><span class="p">(</span><span class="n">lin2</span><span class="p">)))</span>
+
+        <span class="n">fc1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">lin3</span><span class="p">)))</span>
+
+        <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc21</span><span class="p">(</span><span class="n">fc1</span><span class="p">)</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc22</span><span class="p">(</span><span class="n">fc1</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+    
+    <span class="k">def</span> <span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="n">logvar</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">exp_</span><span class="p">()</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">size</span><span class="p">())</span><span class="o">.</span><span class="n">normal_</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">eps</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mu</span>
+        
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">fc3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc_bn3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>
+        <span class="n">fc4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc_bn4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc4</span><span class="p">(</span><span class="n">fc3</span><span class="p">)))</span>
+
+        <span class="n">lin4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_bn4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear4</span><span class="p">(</span><span class="n">fc4</span><span class="p">)))</span>
+        <span class="n">lin5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_bn5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear5</span><span class="p">(</span><span class="n">lin4</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin_bn6</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear6</span><span class="p">(</span><span class="n">lin5</span><span class="p">))</span>
+
+
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span><span class="p">)</span>
+        <span class="c1"># self.decode(z) ist später recon_batch, mu ist mu und logvar ist logvar</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">customLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">customLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># x_recon ist der im forward im Model erstellte recon_batch, x ist der originale x Batch, mu ist mu und logvar ist logvar </span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_recon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span><span class="p">):</span>
+        <span class="n">loss_MSE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">x_recon</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">loss_KLD</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">logvar</span> <span class="o">-</span> <span class="n">mu</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">logvar</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">loss_MSE</span> <span class="o">+</span> <span class="n">loss_KLD</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># takes in a module and applies the specified weight initialization</span>
+<span class="k">def</span> <span class="nf">weights_init_uniform_rule</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">classname</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="c1"># for every Linear layer in a model..</span>
+    <span class="k">if</span> <span class="n">classname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Linear&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># get the number of the inputs</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">in_features</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you want to better understand the variational autoencoder technique, look <a href="https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73">here</a>.</p>
+<p>For better understanding this AutoencoderClass, let me go briefly through it. This is a variational autoencoder (VAE) with two hidden layers, which (by default, but you can change this) 50 and then 12 activations. The latent factors are set to 3 (you can change that, too). So we're first exploding our initially 14 variables to 50 activations, then condensing it to 12, then to 3. From these 3 latent factors we then sample to recreate the original 14 values. We do that by inflating the 3 latent factors back to 12, then 50 and finally 14 activations (we decode the latent factors so to speak). With this reconstructed batch (recon_batch) we compare it with the original batch, computate our loss and adjust the weights and biases via our gradient (our optimizer here will be Adam).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D_in</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">H</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">H2</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Autoencoder</span><span class="p">(</span><span class="n">D_in</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">H2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">loss_mse</span> <span class="o">=</span> <span class="n">customLoss</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Train-Model">Train Model<a class="anchor-link" href="#Train-Model"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">1500</span>
+<span class="n">log_interval</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">val_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">train_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_losses</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trainloader</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">recon_batch</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_mse</span><span class="p">(</span><span class="n">recon_batch</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>        
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;====&gt; Epoch: </span><span class="si">{}</span><span class="s1"> Average training loss: </span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">epoch</span><span class="p">,</span> <span class="n">train_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)))</span>
+        <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">testloader</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">recon_batch</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_mse</span><span class="p">(</span><span class="n">recon_batch</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span><span class="p">)</span>
+            <span class="n">test_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>        
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;====&gt; Epoch: </span><span class="si">{}</span><span class="s1"> Average test loss: </span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">epoch</span><span class="p">,</span> <span class="n">test_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)))</span>
+            <span class="n">test_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+    <span class="n">test</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>====&gt; Epoch: 200 Average training loss: 12.3501
+====&gt; Epoch: 200 Average test loss: 11.7777
+====&gt; Epoch: 400 Average training loss: 10.1168
+====&gt; Epoch: 400 Average test loss: 8.9987
+====&gt; Epoch: 600 Average training loss: 9.2956
+====&gt; Epoch: 600 Average test loss: 9.3548
+====&gt; Epoch: 800 Average training loss: 8.9570
+====&gt; Epoch: 800 Average test loss: 8.9647
+====&gt; Epoch: 1000 Average training loss: 8.6688
+====&gt; Epoch: 1000 Average test loss: 8.5866
+====&gt; Epoch: 1200 Average training loss: 8.3341
+====&gt; Epoch: 1200 Average test loss: 8.8371
+====&gt; Epoch: 1400 Average training loss: 8.4063
+====&gt; Epoch: 1400 Average test loss: 8.7891
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We we're able to reduce the training and test loss but quite a bit, let's have a look at how the fake results actually look like vs the real results:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">testloader</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">recon_batch</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">logvar</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">standardizer</span>
+<span class="n">recon_row</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">recon_batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">real_row</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">recon_row</span><span class="p">,</span> <span class="n">real_row</span><span class="p">)),</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.002792</td>
+      <td>13.535107</td>
+      <td>2.010303</td>
+      <td>2.557292</td>
+      <td>18.198132</td>
+      <td>112.606842</td>
+      <td>2.737524</td>
+      <td>2.807587</td>
+      <td>0.320866</td>
+      <td>1.738254</td>
+      <td>4.899318</td>
+      <td>1.078039</td>
+      <td>3.187276</td>
+      <td>1013.391479</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.000000</td>
+      <td>13.640000</td>
+      <td>3.100000</td>
+      <td>2.560000</td>
+      <td>15.200000</td>
+      <td>116.000000</td>
+      <td>2.700000</td>
+      <td>3.030000</td>
+      <td>0.170000</td>
+      <td>1.660000</td>
+      <td>5.100000</td>
+      <td>0.960000</td>
+      <td>3.360000</td>
+      <td>845.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Not to bad right (the first row is the reconstructed row, the second one the real row from the data)? However, what we want is to built this row not with the real input so to speak, since right now we were giving the model the complete rows with their 14 columns, condensed it to 3 input parameters, just to blow it up again to the corresponding 14 columns. What I want to do is to create these 14 rows by giving the model 3 latent factors as input. Let's have a look at these latent variables.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sigma</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logvar</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(tensor([-0.9960, -0.8502, -0.0043]), tensor([0.2555, 0.4801, 0.9888]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Mu represents the mean for each of our latent factor values, logvar the log of the standard deviation. Each of these have a distribution by itself. We have 54 cases in our test data, so we have 3x54 different mu and logvar. We can have a look at the distribution of each of the 3 latent variables:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mu</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">sigma</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(tensor([-0.0088,  0.0051,  0.0044]), tensor([0.4514, 0.3897, 0.9986]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All of the latent variables have a mean around zero, but the last latent factor has a wider standard deviation. So when we sample values from each of these latent variables, the last value will vary much more then the other two. I assume a normal distribution for all the latent factors.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sample z from q</span>
+<span class="n">no_samples</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">sigma</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">rsample</span><span class="p">(</span><span class="n">sample_shape</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="n">no_samples</span><span class="p">]))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">z</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([20, 3])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">z</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>tensor([[ 0.5283,  0.4519,  0.6792],
+        [ 0.3664, -0.5569, -0.1531],
+        [-0.5802,  0.4394,  1.8406],
+        [-1.0136, -0.4239,  0.4524],
+        [-0.0605,  0.3913,  0.8030]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With these three latent factors we can now start and create fake data for our dataset and see how it looks like:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pred</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([-0.24290268, -0.6087041 , -0.44325534, -0.7158908 , -0.15065292,
+       -0.47845733,  0.26319185,  0.23732403, -0.22809544,  0.12187037,
+       -0.8295655 ,  0.44908378,  0.6173717 , -0.55648965], dtype=float32)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Create-fake-data-from-Autoencoder">Create fake data from Autoencoder<a class="anchor-link" href="#Create-fake-data-from-Autoencoder"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fake_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+<span class="n">fake_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(20, 14)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_fake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fake_data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span><span class="p">)</span>
+<span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span>
+<span class="n">df_fake</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>13.350755</td>
+      <td>3.817283</td>
+      <td>2.425754</td>
+      <td>21.229387</td>
+      <td>98.816788</td>
+      <td>1.682916</td>
+      <td>0.910786</td>
+      <td>0.450081</td>
+      <td>1.245882</td>
+      <td>8.242197</td>
+      <td>0.667928</td>
+      <td>1.705379</td>
+      <td>636.650818</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>12.453159</td>
+      <td>1.916350</td>
+      <td>2.172731</td>
+      <td>18.977226</td>
+      <td>93.556114</td>
+      <td>2.444676</td>
+      <td>2.246270</td>
+      <td>0.335432</td>
+      <td>1.663583</td>
+      <td>3.166457</td>
+      <td>1.063876</td>
+      <td>3.050176</td>
+      <td>568.385925</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>12.735057</td>
+      <td>2.404566</td>
+      <td>2.447556</td>
+      <td>20.400013</td>
+      <td>105.475235</td>
+      <td>1.937112</td>
+      <td>1.657119</td>
+      <td>0.385740</td>
+      <td>1.452577</td>
+      <td>4.242754</td>
+      <td>0.928397</td>
+      <td>2.467263</td>
+      <td>680.271545</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>14.664644</td>
+      <td>1.517465</td>
+      <td>2.269279</td>
+      <td>12.428186</td>
+      <td>88.851791</td>
+      <td>3.354010</td>
+      <td>3.997237</td>
+      <td>0.265253</td>
+      <td>2.586414</td>
+      <td>7.366968</td>
+      <td>1.275564</td>
+      <td>3.170231</td>
+      <td>1516.662720</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>13.160161</td>
+      <td>3.359397</td>
+      <td>2.415784</td>
+      <td>21.050211</td>
+      <td>99.859154</td>
+      <td>1.662516</td>
+      <td>0.929189</td>
+      <td>0.427978</td>
+      <td>1.135361</td>
+      <td>7.101127</td>
+      <td>0.708510</td>
+      <td>1.732820</td>
+      <td>640.412231</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2</td>
+      <td>12.453159</td>
+      <td>1.916350</td>
+      <td>2.172731</td>
+      <td>18.977226</td>
+      <td>93.556114</td>
+      <td>2.444676</td>
+      <td>2.246270</td>
+      <td>0.335432</td>
+      <td>1.663583</td>
+      <td>3.166457</td>
+      <td>1.063876</td>
+      <td>3.050176</td>
+      <td>568.385925</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2</td>
+      <td>12.520310</td>
+      <td>2.522696</td>
+      <td>2.375254</td>
+      <td>20.435560</td>
+      <td>92.619812</td>
+      <td>1.838333</td>
+      <td>1.361269</td>
+      <td>0.470815</td>
+      <td>1.221076</td>
+      <td>4.518130</td>
+      <td>0.906680</td>
+      <td>2.146883</td>
+      <td>583.079102</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>3</td>
+      <td>12.877177</td>
+      <td>2.746192</td>
+      <td>2.395865</td>
+      <td>20.154610</td>
+      <td>97.263092</td>
+      <td>1.744550</td>
+      <td>1.187050</td>
+      <td>0.464942</td>
+      <td>1.160733</td>
+      <td>5.619783</td>
+      <td>0.836708</td>
+      <td>1.871472</td>
+      <td>665.485718</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2</td>
+      <td>12.679532</td>
+      <td>2.344776</td>
+      <td>2.331834</td>
+      <td>19.901327</td>
+      <td>97.031586</td>
+      <td>1.857117</td>
+      <td>1.495742</td>
+      <td>0.461352</td>
+      <td>1.239715</td>
+      <td>4.668478</td>
+      <td>0.934352</td>
+      <td>2.094139</td>
+      <td>680.778809</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>13.062141</td>
+      <td>2.719065</td>
+      <td>2.461590</td>
+      <td>19.947014</td>
+      <td>103.352890</td>
+      <td>2.070540</td>
+      <td>1.566055</td>
+      <td>0.380154</td>
+      <td>1.293219</td>
+      <td>5.675068</td>
+      <td>0.852832</td>
+      <td>2.128047</td>
+      <td>778.582825</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For comparison the real data:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_base</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.38</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>1</td>
+      <td>13.48</td>
+      <td>1.81</td>
+      <td>2.41</td>
+      <td>20.5</td>
+      <td>100</td>
+      <td>2.70</td>
+      <td>2.98</td>
+      <td>0.26</td>
+      <td>1.86</td>
+      <td>5.10</td>
+      <td>1.04</td>
+      <td>3.47</td>
+      <td>920</td>
+    </tr>
+    <tr>
+      <th>114</th>
+      <td>2</td>
+      <td>12.08</td>
+      <td>1.39</td>
+      <td>2.50</td>
+      <td>22.5</td>
+      <td>84</td>
+      <td>2.56</td>
+      <td>2.29</td>
+      <td>0.43</td>
+      <td>1.04</td>
+      <td>2.90</td>
+      <td>0.93</td>
+      <td>3.19</td>
+      <td>385</td>
+    </tr>
+    <tr>
+      <th>149</th>
+      <td>3</td>
+      <td>13.08</td>
+      <td>3.90</td>
+      <td>2.36</td>
+      <td>21.5</td>
+      <td>113</td>
+      <td>1.41</td>
+      <td>1.39</td>
+      <td>0.34</td>
+      <td>1.14</td>
+      <td>9.40</td>
+      <td>0.57</td>
+      <td>1.33</td>
+      <td>550</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>3</td>
+      <td>14.34</td>
+      <td>1.68</td>
+      <td>2.70</td>
+      <td>25.0</td>
+      <td>98</td>
+      <td>2.80</td>
+      <td>1.31</td>
+      <td>0.53</td>
+      <td>2.70</td>
+      <td>13.00</td>
+      <td>0.57</td>
+      <td>1.96</td>
+      <td>660</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>13.86</td>
+      <td>1.35</td>
+      <td>2.27</td>
+      <td>16.0</td>
+      <td>98</td>
+      <td>2.98</td>
+      <td>3.15</td>
+      <td>0.22</td>
+      <td>1.85</td>
+      <td>7.22</td>
+      <td>1.01</td>
+      <td>3.55</td>
+      <td>1045</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>2</td>
+      <td>12.08</td>
+      <td>1.83</td>
+      <td>2.32</td>
+      <td>18.5</td>
+      <td>81</td>
+      <td>1.60</td>
+      <td>1.50</td>
+      <td>0.52</td>
+      <td>1.64</td>
+      <td>2.40</td>
+      <td>1.08</td>
+      <td>2.27</td>
+      <td>480</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>1</td>
+      <td>13.90</td>
+      <td>1.68</td>
+      <td>2.12</td>
+      <td>16.0</td>
+      <td>101</td>
+      <td>3.10</td>
+      <td>3.39</td>
+      <td>0.21</td>
+      <td>2.14</td>
+      <td>6.10</td>
+      <td>0.91</td>
+      <td>3.33</td>
+      <td>985</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>14.10</td>
+      <td>2.16</td>
+      <td>2.30</td>
+      <td>18.0</td>
+      <td>105</td>
+      <td>2.95</td>
+      <td>3.32</td>
+      <td>0.22</td>
+      <td>2.38</td>
+      <td>5.75</td>
+      <td>1.25</td>
+      <td>3.17</td>
+      <td>1510</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>1</td>
+      <td>13.58</td>
+      <td>1.66</td>
+      <td>2.36</td>
+      <td>19.1</td>
+      <td>106</td>
+      <td>2.86</td>
+      <td>3.19</td>
+      <td>0.22</td>
+      <td>1.95</td>
+      <td>6.90</td>
+      <td>1.09</td>
+      <td>2.88</td>
+      <td>1515</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Compare-variables-grouped-by-Wine">Compare variables grouped by Wine<a class="anchor-link" href="#Compare-variables-grouped-by-Wine"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_base</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+    <tr>
+      <th>Wine</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>13.744746</td>
+      <td>2.010678</td>
+      <td>2.455593</td>
+      <td>17.037288</td>
+      <td>106.338983</td>
+      <td>2.840169</td>
+      <td>2.982373</td>
+      <td>0.290000</td>
+      <td>1.899322</td>
+      <td>5.528305</td>
+      <td>1.062034</td>
+      <td>3.157797</td>
+      <td>1115.711864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.278732</td>
+      <td>1.932676</td>
+      <td>2.244789</td>
+      <td>20.238028</td>
+      <td>94.549296</td>
+      <td>2.258873</td>
+      <td>2.080845</td>
+      <td>0.363662</td>
+      <td>1.630282</td>
+      <td>3.086620</td>
+      <td>1.056282</td>
+      <td>2.785352</td>
+      <td>519.507042</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13.153750</td>
+      <td>3.333750</td>
+      <td>2.437083</td>
+      <td>21.416667</td>
+      <td>99.312500</td>
+      <td>1.678750</td>
+      <td>0.781458</td>
+      <td>0.447500</td>
+      <td>1.153542</td>
+      <td>7.396250</td>
+      <td>0.682708</td>
+      <td>1.683542</td>
+      <td>629.895833</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_fake</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+    <tr>
+      <th>Wine</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>13.812141</td>
+      <td>1.814212</td>
+      <td>2.482638</td>
+      <td>17.172688</td>
+      <td>107.468864</td>
+      <td>3.062387</td>
+      <td>3.344664</td>
+      <td>0.259955</td>
+      <td>2.162966</td>
+      <td>5.331643</td>
+      <td>1.147217</td>
+      <td>3.280716</td>
+      <td>1148.031372</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.560544</td>
+      <td>2.157595</td>
+      <td>2.301805</td>
+      <td>19.696327</td>
+      <td>99.324005</td>
+      <td>2.254415</td>
+      <td>1.995140</td>
+      <td>0.366076</td>
+      <td>1.575015</td>
+      <td>3.791955</td>
+      <td>1.000527</td>
+      <td>2.741598</td>
+      <td>629.895203</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13.170316</td>
+      <td>3.413856</td>
+      <td>2.416369</td>
+      <td>20.929930</td>
+      <td>99.028229</td>
+      <td>1.683604</td>
+      <td>0.964315</td>
+      <td>0.443444</td>
+      <td>1.176529</td>
+      <td>7.288512</td>
+      <td>0.718357</td>
+      <td>1.745200</td>
+      <td>644.870056</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That looks pretty convincing if you ask me.</p>
+<p>To sum up, we've built a variational autoencoder, which we trained on our trainingset. We checked whether our loss kept on improving based on the testset, which the autoencoder never saw for generating fake data. We then calculated the mean and standard deviation from our latent factors given the test data. We've then sampled from this distribution to feed it back into our decoder to create some fake data. With this approach I am now able to create as much fake data derived from the underlying distribution as a want. And I think the results look promising.</p>
+<p>You can take this approach to for example create data from under-represented in highly skewed datasets instead of just weighting them higher. The re-weighting approach might cause the algorithm to find relations where there are none, only because a few then overrepresented data points share this relation by random. With the shown approach, the learned distribution would take into account the high variance these features have and therefore will hopefully help the algorithm to not draw these false conclusions.</p>
+<p>Stay tuned for the next blogpost, where I will show the shown approach in exactly this use case.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastpages_/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/fastpages_/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/fastpages_/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lschmiddey" title="lschmiddey"><svg class="svg-icon grey"><use xlink:href="/fastpages_/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
