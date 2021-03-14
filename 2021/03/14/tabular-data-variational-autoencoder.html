@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Variational Autoencoder on tabular data | Data Science Blog von lschmiddey</title>
+<title>Data Augmentation for tabular data | Data Science Blog von lschmiddey</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Variational Autoencoder on tabular data" />
+<meta property="og:title" content="Data Augmentation for tabular data" />
 <meta property="og:locale" content="en_US" />
 <link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
 <meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
@@ -14,12 +14,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-03-14T00:00:00-06:00" />
 <script type="application/ld+json">
-{"headline":"Variational Autoencoder on tabular data","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
+{"headline":"Data Augmentation for tabular data","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/fastpages_/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Variational Autoencoder on tabular data | Data Science Blog von lschmiddey</title>
+<title>Data Augmentation for tabular data | Data Science Blog von lschmiddey</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Variational Autoencoder on tabular data" />
+<meta property="og:title" content="Data Augmentation for tabular data" />
 <meta property="og:locale" content="en_US" />
 <link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
 <meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html" />
@@ -27,7 +27,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-03-14T00:00:00-06:00" />
 <script type="application/ld+json">
-{"headline":"Variational Autoencoder on tabular data","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
+{"headline":"Data Augmentation for tabular data","dateModified":"2021-03-14T00:00:00-06:00","datePublished":"2021-03-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/03/14/tabular-data-variational-autoencoder.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -83,7 +83,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Variational Autoencoder on tabular data</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-14T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Data Augmentation for tabular data</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-14T00:00:00-06:00" itemprop="datePublished">
         Mar 14, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -138,14 +138,14 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-create-fake-tabular-data-to-enhance-machine-learning-algorithms">How to create fake tabular data to enhance machine learning algorithms<a class="anchor-link" href="#How-to-create-fake-tabular-data-to-enhance-machine-learning-algorithms"> </a></h2>
+<h2 id="How-to-create-fake-tabular-data-with-a-variational-autoencoder-to-improve-deep-learning-algorithms">How to create fake tabular data with a variational autoencoder to improve deep learning algorithms<a class="anchor-link" href="#How-to-create-fake-tabular-data-with-a-variational-autoencoder-to-improve-deep-learning-algorithms"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To train deeplearning models the more data the better. When we're thinking of image data, the deeplearnig community thought about a lot of tricks how to enhance the model given a dataset of images: image enhancement. Meaning that by rotating, flipping, blurring etc the image we can create more input data and also improve our model.</p>
-<p>Hoever, when thinking about tabular data, only few of these techniques exist. In this notebook I want to show you how to create a variational autoencoder to make use of data enhancement. I will create fake data, which is sampled from the learned distribution of the underlying data.</p>
+<p>To train deeplearning models the more data the better. When we're thinking of image data, the deeplearnig community thought about a lot of tricks how to enhance the model given a dataset of images. Meaning that by rotating, flipping, blurring etc. the image we can create more input data and also improve our model.</p>
+<p>However, when thinking about tabular data, only few of these techniques exist. In this blogpost I want to show you how to create a variational autoencoder and make use of data augmentation. I will create fake data, which is sampled from the learned distribution of the underlying data.</p>
 
 </div>
 </div>
