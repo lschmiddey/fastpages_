@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deep Learning for tabular data augmentation | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Deep Learning for tabular data augmentation" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"dateModified":"2021-04-10T00:00:00-05:00","datePublished":"2021-04-10T00:00:00-05:00","headline":"Deep Learning for tabular data augmentation","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastpages_/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deep Learning for tabular data augmentation | Data Science Blog von lschmiddey</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Deep Learning for tabular data augmentation" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html" />
+<meta property="og:url" content="https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html" />
+<meta property="og:site_name" content="Data Science Blog von lschmiddey" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"dateModified":"2021-04-10T00:00:00-05:00","datePublished":"2021-04-10T00:00:00-05:00","headline":"Deep Learning for tabular data augmentation","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html"},"url":"https://lschmiddey.github.io/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lschmiddey.github.io/fastpages_/feed.xml" title="Data Science Blog von lschmiddey" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/fastpages_/">Data Science Blog von lschmiddey</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastpages_/about/">About Me</a><a class="page-link" href="/fastpages_/search/">Search</a><a class="page-link" href="/fastpages_/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Deep Learning for tabular data augmentation</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-04-10T00:00:00-05:00" itemprop="datePublished">
+        Apr 10, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lschmiddey/fastpages_/tree/master/_notebooks/2021-04-10-DeepLearning_TabularDataAugmentation.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/fastpages_/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lschmiddey/fastpages_/master?filepath=_notebooks%2F2021-04-10-DeepLearning_TabularDataAugmentation.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lschmiddey/fastpages_/blob/master/_notebooks/2021-04-10-DeepLearning_TabularDataAugmentation.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-04-10-DeepLearning_TabularDataAugmentation.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-to-use-a-variational-Autoencoder-to-augment-tabular-data">How to use a variational Autoencoder to augment tabular data<a class="anchor-link" href="#How-to-use-a-variational-Autoencoder-to-augment-tabular-data"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When it comes to DeepLearning, the more data we have the better the chances are to get a great performing model. In fields like image recognition research has already came up with quite a few clever ideas how to use the existing data to create more data out of it. This is called data augmentation.</p>
+<p>However, when we look at Deep Learning in the tabular data context, there are still many concepts missing. What I would like to show in this blogpost is a way to augment tabular data, what we could use in order to train a DeepLearning Model on more tabular data, or which can be used to create data of underrepresented classes.</p>
+<p>I want to show graphically how this newly created data is sampled from the distribution of the underlying data and hence how this data can help to make better Deep Learning models.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I've already created a small library, which I called deep_tabular_augmentation. In here I've created a class, which handles all of the tabular data augmentation.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">import</span> <span class="nn">deep_tabular_augmentation</span> <span class="k">as</span> <span class="nn">dta</span>
+<span class="kn">import</span> <span class="nn">warnings</span><span class="p">;</span> <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So first, we need to get some data. Here, I've got some data on the infamous wine-dataset.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+
+<span class="n">DATA_PATH</span> <span class="o">=</span> <span class="s1">&#39;data/wine.csv&#39;</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>14.23</td>
+      <td>1.71</td>
+      <td>2.43</td>
+      <td>15.6</td>
+      <td>127</td>
+      <td>2.80</td>
+      <td>3.06</td>
+      <td>0.28</td>
+      <td>2.29</td>
+      <td>5.64</td>
+      <td>1.04</td>
+      <td>3.92</td>
+      <td>1065</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.38</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>13.16</td>
+      <td>2.36</td>
+      <td>2.67</td>
+      <td>18.6</td>
+      <td>101</td>
+      <td>2.80</td>
+      <td>3.24</td>
+      <td>0.30</td>
+      <td>2.81</td>
+      <td>5.68</td>
+      <td>1.03</td>
+      <td>3.17</td>
+      <td>1185</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>14.37</td>
+      <td>1.95</td>
+      <td>2.50</td>
+      <td>16.8</td>
+      <td>113</td>
+      <td>3.85</td>
+      <td>3.49</td>
+      <td>0.24</td>
+      <td>2.18</td>
+      <td>7.80</td>
+      <td>0.86</td>
+      <td>3.45</td>
+      <td>1480</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>13.24</td>
+      <td>2.59</td>
+      <td>2.87</td>
+      <td>21.0</td>
+      <td>118</td>
+      <td>2.80</td>
+      <td>2.69</td>
+      <td>0.39</td>
+      <td>1.82</td>
+      <td>4.32</td>
+      <td>1.04</td>
+      <td>2.93</td>
+      <td>735</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We then build a DataLoader, in which we also standardize our data. We save the scaler in our dataset to make use of it later, when we invert the scaling.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_and_standardize_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># read in from csv</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="c1"># replace nan with -99</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">-</span><span class="mi">99</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+    <span class="c1"># randomly split</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="c1"># standardize values</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>   
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">scaler</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="k">class</span> <span class="nc">DataBuilder</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardizer</span> <span class="o">=</span> <span class="n">load_and_standardize_data</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span> 
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>      
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">len</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">traindata_set</span><span class="o">=</span><span class="n">DataBuilder</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">testdata_set</span><span class="o">=</span><span class="n">DataBuilder</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">trainloader</span><span class="o">=</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">traindata_set</span><span class="p">,</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">testloader</span><span class="o">=</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">testdata_set</span><span class="p">,</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">testloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(torch.Size([124, 14]), torch.Size([54, 14]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We've build our train and test datasets, and with the help of DataLoaders we also turned them into tensors. So, let's use deep_tabular_augmentation now. The class needs seven inputs: trainloader, testloader, device on which to run the traning, the input dimension (in this case: 14), and how many nodes the first and second hidden layers should have. Finally, we can also specify the number of latent factors. These latent factors will contain all the condensed information, meaning that we can use these latent factors to recreate the original 14 input dimensions (e.g. our data).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D_in</span> <span class="o">=</span> <span class="n">traindata_set</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">H</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">H2</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="n">autoenc_model</span> <span class="o">=</span> <span class="n">dta</span><span class="o">.</span><span class="n">AutoencoderModel</span><span class="p">(</span><span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">D_in</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">H2</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After we've successfully initiated our model, let's train it and call the trained model "autoenc_model_fit".</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">autoenc_model_fit</span> <span class="o">=</span> <span class="n">autoenc_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>====&gt; Epoch: 200 Average training loss: 11.3281
+====&gt; Epoch: 200 Average test loss: 11.4239
+====&gt; Epoch: 400 Average training loss: 9.7651
+====&gt; Epoch: 400 Average test loss: 10.3157
+====&gt; Epoch: 600 Average training loss: 9.1283
+====&gt; Epoch: 600 Average test loss: 10.5291
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, all we need is to create some fake data based on the trained model. How this works is the following: we know the learned parameters for the mean and the variance of our latent factors. Then, we use a normal distribution with the mean and variance of each of the latent factors to sample a value for latent factor 1,2 and 3 (because we've got three latent facots in this case). These generated starting points for our latent factors are then used to inflate towards the 14 real input variables. Let's see how it's done:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">trainloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">standardizer</span>
+<span class="n">df_fake</span> <span class="o">=</span> <span class="n">autoenc_model_fit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">no_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span>
+<span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">df_fake</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span>
+<span class="n">df_fake</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>12.493084</td>
+      <td>2.045130</td>
+      <td>2.237029</td>
+      <td>18.645376</td>
+      <td>101.227913</td>
+      <td>2.366858</td>
+      <td>2.039845</td>
+      <td>0.310666</td>
+      <td>1.780123</td>
+      <td>3.824865</td>
+      <td>1.053821</td>
+      <td>2.959614</td>
+      <td>614.468567</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>12.388008</td>
+      <td>2.028943</td>
+      <td>2.237992</td>
+      <td>19.671783</td>
+      <td>93.292801</td>
+      <td>2.290553</td>
+      <td>2.102422</td>
+      <td>0.337810</td>
+      <td>1.582847</td>
+      <td>3.545685</td>
+      <td>1.047288</td>
+      <td>2.853665</td>
+      <td>574.657776</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>12.863456</td>
+      <td>2.061298</td>
+      <td>2.315192</td>
+      <td>18.529932</td>
+      <td>104.701004</td>
+      <td>2.480082</td>
+      <td>2.273354</td>
+      <td>0.298898</td>
+      <td>1.788156</td>
+      <td>4.134489</td>
+      <td>1.071253</td>
+      <td>2.954578</td>
+      <td>788.806580</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>12.315710</td>
+      <td>2.164225</td>
+      <td>2.261593</td>
+      <td>20.433725</td>
+      <td>91.778603</td>
+      <td>2.019248</td>
+      <td>1.704518</td>
+      <td>0.383477</td>
+      <td>1.496545</td>
+      <td>3.532443</td>
+      <td>0.991632</td>
+      <td>2.591641</td>
+      <td>531.966309</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>12.562940</td>
+      <td>2.135798</td>
+      <td>2.234170</td>
+      <td>19.034275</td>
+      <td>101.889763</td>
+      <td>2.421708</td>
+      <td>2.133960</td>
+      <td>0.296481</td>
+      <td>1.818705</td>
+      <td>3.890027</td>
+      <td>1.052557</td>
+      <td>2.903332</td>
+      <td>662.883545</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The deep_tabular_augmentation library has another method in its sleeve: predict_with_noise. What this does is the following, sampling from a normal distribution each element (independend of each other element) will be multiplied by 1 plus the sampled number. Why should we do this? The answer is that the Variational Autoencoder works similar to a PCA, resulting in sharper defined relations between variables. So the Variational Autoencoder keeps mean and standard deviance within the variables, however, the trained parameters of the model already find out "hidden" relations between variables. When these relations are linear the Variational Autoencoder de facto performs a PCA. We'll have a look at it in a second.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_fake_with_noise</span> <span class="o">=</span> <span class="n">autoenc_model_fit</span><span class="o">.</span><span class="n">predict_with_noise</span><span class="p">(</span><span class="n">no_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">group_var</span><span class="o">=</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span>
+<span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span>
+<span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">df_fake_with_noise</span><span class="p">[</span><span class="s1">&#39;Wine&#39;</span><span class="p">])</span>
+<span class="n">df_fake_with_noise</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Wine</th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>12.106316</td>
+      <td>2.142077</td>
+      <td>2.127616</td>
+      <td>19.408381</td>
+      <td>92.179733</td>
+      <td>2.418110</td>
+      <td>2.124110</td>
+      <td>0.353460</td>
+      <td>1.544483</td>
+      <td>3.348948</td>
+      <td>1.057455</td>
+      <td>2.828610</td>
+      <td>560.824158</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>12.147018</td>
+      <td>2.009001</td>
+      <td>2.188961</td>
+      <td>22.396885</td>
+      <td>101.379967</td>
+      <td>2.318827</td>
+      <td>2.177448</td>
+      <td>0.336155</td>
+      <td>1.584168</td>
+      <td>3.603321</td>
+      <td>0.984947</td>
+      <td>2.718268</td>
+      <td>604.860901</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>13.262069</td>
+      <td>1.864855</td>
+      <td>2.277317</td>
+      <td>19.010958</td>
+      <td>95.259872</td>
+      <td>2.493481</td>
+      <td>2.209520</td>
+      <td>0.347245</td>
+      <td>1.750477</td>
+      <td>3.704191</td>
+      <td>0.989856</td>
+      <td>2.743370</td>
+      <td>631.236572</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>13.586826</td>
+      <td>2.270907</td>
+      <td>2.191374</td>
+      <td>22.129240</td>
+      <td>91.323662</td>
+      <td>1.793574</td>
+      <td>1.240703</td>
+      <td>0.437917</td>
+      <td>1.393128</td>
+      <td>3.973017</td>
+      <td>0.862660</td>
+      <td>2.276499</td>
+      <td>543.781311</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>13.825186</td>
+      <td>1.984307</td>
+      <td>2.333792</td>
+      <td>18.083511</td>
+      <td>102.420219</td>
+      <td>2.705270</td>
+      <td>2.401335</td>
+      <td>0.312623</td>
+      <td>1.910688</td>
+      <td>4.119694</td>
+      <td>1.008278</td>
+      <td>3.032777</td>
+      <td>685.976562</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's have a look at the descriptives, especially the mean. Can you spot a difference between the real and the fake data?</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),[</span><span class="s1">&#39;mean&#39;</span><span class="p">])]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+    </tr>
+    <tr>
+      <th>Wine</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>13.744746</td>
+      <td>2.010678</td>
+      <td>2.455593</td>
+      <td>17.037288</td>
+      <td>106.338983</td>
+      <td>2.840169</td>
+      <td>2.982373</td>
+      <td>0.290000</td>
+      <td>1.899322</td>
+      <td>5.528305</td>
+      <td>1.062034</td>
+      <td>3.157797</td>
+      <td>1115.711864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.278732</td>
+      <td>1.932676</td>
+      <td>2.244789</td>
+      <td>20.238028</td>
+      <td>94.549296</td>
+      <td>2.258873</td>
+      <td>2.080845</td>
+      <td>0.363662</td>
+      <td>1.630282</td>
+      <td>3.086620</td>
+      <td>1.056282</td>
+      <td>2.785352</td>
+      <td>519.507042</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13.153750</td>
+      <td>3.333750</td>
+      <td>2.437083</td>
+      <td>21.416667</td>
+      <td>99.312500</td>
+      <td>1.678750</td>
+      <td>0.781458</td>
+      <td>0.447500</td>
+      <td>1.153542</td>
+      <td>7.396250</td>
+      <td>0.682708</td>
+      <td>1.683542</td>
+      <td>629.895833</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_fake</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),[</span><span class="s1">&#39;mean&#39;</span><span class="p">])]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+    </tr>
+    <tr>
+      <th>Wine</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>13.756567</td>
+      <td>1.972927</td>
+      <td>2.439609</td>
+      <td>16.679155</td>
+      <td>110.221558</td>
+      <td>2.888496</td>
+      <td>2.933521</td>
+      <td>0.296994</td>
+      <td>1.980520</td>
+      <td>5.707772</td>
+      <td>1.065832</td>
+      <td>3.040885</td>
+      <td>1103.145508</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.550643</td>
+      <td>2.169043</td>
+      <td>2.292549</td>
+      <td>19.789505</td>
+      <td>96.663307</td>
+      <td>2.250596</td>
+      <td>2.012712</td>
+      <td>0.350111</td>
+      <td>1.627728</td>
+      <td>3.967775</td>
+      <td>1.007894</td>
+      <td>2.744052</td>
+      <td>616.919006</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13.225099</td>
+      <td>3.809655</td>
+      <td>2.512825</td>
+      <td>22.554857</td>
+      <td>101.781906</td>
+      <td>1.470288</td>
+      <td>0.664501</td>
+      <td>0.507955</td>
+      <td>0.921151</td>
+      <td>7.329511</td>
+      <td>0.642636</td>
+      <td>1.483876</td>
+      <td>621.194458</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_fake_with_noise</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Wine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),[</span><span class="s1">&#39;mean&#39;</span><span class="p">])]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Alcohol</th>
+      <th>Malic.acid</th>
+      <th>Ash</th>
+      <th>Acl</th>
+      <th>Mg</th>
+      <th>Phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid.phenols</th>
+      <th>Proanth</th>
+      <th>Color.int</th>
+      <th>Hue</th>
+      <th>OD</th>
+      <th>Proline</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>mean</th>
+    </tr>
+    <tr>
+      <th>Wine</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>13.816388</td>
+      <td>1.980611</td>
+      <td>2.445411</td>
+      <td>16.888805</td>
+      <td>109.618469</td>
+      <td>2.890874</td>
+      <td>2.916224</td>
+      <td>0.297376</td>
+      <td>1.960559</td>
+      <td>5.643065</td>
+      <td>1.068307</td>
+      <td>3.012105</td>
+      <td>1106.231079</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.554925</td>
+      <td>2.182181</td>
+      <td>2.296422</td>
+      <td>19.779770</td>
+      <td>96.850357</td>
+      <td>2.270568</td>
+      <td>2.013577</td>
+      <td>0.349725</td>
+      <td>1.625649</td>
+      <td>4.029018</td>
+      <td>1.005889</td>
+      <td>2.740945</td>
+      <td>626.561035</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>13.099731</td>
+      <td>3.869962</td>
+      <td>2.526824</td>
+      <td>22.768381</td>
+      <td>102.265625</td>
+      <td>1.440060</td>
+      <td>0.597155</td>
+      <td>0.517642</td>
+      <td>0.879244</td>
+      <td>7.493037</td>
+      <td>0.621761</td>
+      <td>1.406803</td>
+      <td>605.561829</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><a class="u-url" href="/fastpages_/2021/04/10/DeepLearning_TabularDataAugmentation.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastpages_/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/fastpages_/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/fastpages_/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lschmiddey" title="lschmiddey"><svg class="svg-icon grey"><use xlink:href="/fastpages_/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
